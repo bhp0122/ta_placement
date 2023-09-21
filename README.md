@@ -1,3 +1,6 @@
+# Material Turned-In
+All the material for Sprint 1 is under the Projects tab. 
+
 # TA Placement Software README (TAPS)
 
 This React JS application was made to automatically assign Teacher Assistants to classes. Due to the security of each Teacher Assistants Data, this project was created with no back end at all to avoid having to contact a server. This means all the code that is a part of this project is done in strictly JavaScript. This detail was discussed greatly in the planning of this project and we were not able to find an effective way around it, so we believe this is best possible way to protect the student data.
