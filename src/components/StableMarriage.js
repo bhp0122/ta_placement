@@ -228,7 +228,7 @@ function make_schedule(){
 		if (!m[0][0].includes('dummy') && !m[0][1].includes('dummy'))
 			sched[m[0][0]].push([m[0][1], m[1]])
 	})
-	for (var course in schedule){
+	for (var course in sched){
 		// schedule[course].forEach(x => setTentSchedule(a += '[' + x + ']'))
 		//   FILLS Dictionary for Table   // 
 		while(sched[course].length < 2){
