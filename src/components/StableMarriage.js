@@ -276,7 +276,7 @@ function run_all() {
 			current_matches = working_matches
 			count = 0
 			remaining_hours = {...remaining_hours_men}
-		}else if (count >= AUDIBLE_COUNT){
+		} else if (count >= AUDIBLE_COUNT){
 			history.push([schedule, compl, comp, remaining_hours])
 			comp = 100
 			current_matches = []
@@ -290,6 +290,7 @@ function run_all() {
 	schedule = history[0][0]
 	console.log(history)
 	console.log(schedule)
+
 }
 
 function validate_schedule(schedule, courses){
@@ -299,19 +300,23 @@ function validate_schedule(schedule, courses){
 
 		const l = schedule[course].length
 		if (l >= 3)
-			complications.push(course + " has " + l + " tas.")
+			complications.push([course, 0, 0, 0, "Has " + l + " TAs."])
 		for (var i = 0; i < l; i++){
 			if (schedule[course][i][0] === '')
 				continue;
 			const current_course = courses.find(c => c.CRN === course)
-			if (!current_course.teacher_assistants.some(item => item.able_TA === schedule[course][i][0]))
-				complications.push(schedule[course][i][0] + "-"+  tas.find(t => t.uuid === schedule[course][i][0]).firstName + " " + tas.find(t => t.uuid === schedule[course][i][0]).lastName + ' not eligible for ' + course)
-			else
+			if (!current_course.teacher_assistants.some(item => item.able_TA === schedule[course][i][0])) {
+				complications.push([course, schedule[course][i][0], tas.find(t => t.uuid === schedule[course][i][0]).firstName, tas.find(t => t.uuid === schedule[course][i][0]).lastName, "Not Eligible"])
+				// complications.push(schedule[course][i][0] + "-"+  tas.find(t => t.uuid === schedule[course][i][0]).firstName + " " + tas.find(t => t.uuid === schedule[course][i][0]).lastName + ' not eligible for ' + course)
+			}
+			else {
 				working_matches.push([[course, schedule[course][i][0]],schedule[course][i][1]])
+			}
 		}
 	}
 	return [complications, working_matches]
 }
+
 
 
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
@@ -374,7 +379,8 @@ function handleDownload(event) {
 
 
 
-return (
+  return (
+	
 	<div class="container">
 		<div class="row">
 			<div class="col">
@@ -411,6 +417,33 @@ return (
 					{history[0][1].map(conflict => <li>{conflict}</li>)}
 				</ul>
 			</div>
+{/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}			
+			
+			<table class="table table-striped table-bordered table-sm">
+				<thead>
+					<tr>
+						<th>Course</th>
+						<th>CRN</th>
+						<th>Last</th>
+						<th>First</th>
+						<th>Resond for Conflict</th>
+					</tr>
+				</thead>
+				<tbody>
+					{history[0][1].map(conflict => 
+						<tr> 
+							<td>COMP #</td>
+							<td>{conflict[0]}</td>
+							<td>{conflict[1]}</td>
+							<td>{conflict[2]}</td>
+							<td>{conflict[3]}</td>
+							<td>{conflict[4]}</td>
+						</tr>
+						)}
+				</tbody>
+			</table>
+
+{/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
 			<div class="col">
 			<h1>Schedule 2</h1>
 			<table class="table table-striped table-bordered table-sm">
@@ -441,10 +474,33 @@ return (
 				<button value={1} class="btn btn-outline-dark" style={{alignContent:"center"}} onClick={handleDownload}>Download CSV</button>
 			</div>
 			<h1>Conflict Report</h1>
-				<ul>
-					{history[1][1].map(conflict => <li>{conflict}</li>)}
-				</ul>
+{/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+			<table class="table table-striped table-bordered table-sm">
+				<thead>
+					<tr>
+						<th>Course</th>
+						<th>CRN</th>
+						<th>Last</th>
+						<th>First</th>
+						<th>Resond for Conflict</th>
+					</tr>
+				</thead>
+				<tbody>
+					{history[1][1].map(conflict => 
+						<tr> 
+							<td>COMP #</td>
+							<td>{conflict[0]}</td>
+							<td>{conflict[1]}</td>
+							<td>{conflict[2]}</td>
+							<td>{conflict[3]}</td>
+							<td>{conflict[4]}</td>
+						</tr>
+						)}
+				</tbody>
+			</table>
+				{/* <ul>{history[1][1].map(conflict => <li>{conflict}</li>)}</ul> */}
 			</div>
+
 
 			<div class="col">
 			<h1>Schedule 3</h1>
@@ -476,17 +532,41 @@ return (
 				<button value={2} class="btn btn-outline-dark" style={{alignContent:"center"}} onClick={handleDownload}>Download CSV</button>
 			</div>
 			<h1>Conflict Report</h1>
-				<ul>
-					{history[2][1].map(conflict => <li>{conflict}</li>)}
-				</ul>
-			</div>
 
+{/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+			<table class="table table-striped table-bordered table-sm">
+				<thead>
+					<tr>
+						<th>Course</th>
+						<th>CRN</th>
+						<th>Last</th>
+						<th>First</th>
+						<th>Resond for Conflict</th>
+					</tr>
+				</thead>
+				<tbody>
+					{history[2][1].map(conflict => 
+						<tr> 
+							<td>COMP #</td>
+							<td>{conflict[0]}</td>
+							<td>{conflict[1]}</td>
+							<td>{conflict[2]}</td>
+							<td>{conflict[3]}</td>
+							<td>{conflict[4]}</td>
+						</tr>
+						)}
+				</tbody>
+			</table>
+			{/* {history[2][1].map(conflict => <li>{conflict}</li>)} */}
+{/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+			</div>
 		</div>
 
-
-
-
-	</div>
+	
+	
+	
+	
+	</div> // Container ends
 );
 }
 
