@@ -298,14 +298,15 @@ function validate_schedule(schedule, courses){
 	for (let course in schedule){
 
 		const l = schedule[course].length
+		const current_course = courses.find(c => c.CRN === course)
+		const course_name = 'COMP ' + current_course.course_number
 		if (l >= 3)
-			complications.push(course + " has " + l + " tas.")
+			complications.push(course_name + " has " + l + " tas.")
 		for (var i = 0; i < l; i++){
 			if (schedule[course][i][0] === '')
 				continue;
-			const current_course = courses.find(c => c.CRN === course)
 			if (!current_course.teacher_assistants.some(item => item.able_TA === schedule[course][i][0]))
-				complications.push(schedule[course][i][0] + "-"+  tas.find(t => t.uuid === schedule[course][i][0]).firstName + " " + tas.find(t => t.uuid === schedule[course][i][0]).lastName + ' not eligible for ' + course)
+				complications.push(schedule[course][i][0] + "-"+  tas.find(t => t.uuid === schedule[course][i][0]).firstName + " " + tas.find(t => t.uuid === schedule[course][i][0]).lastName + ' not eligible for ' + course_name)
 			else
 				working_matches.push([[course, schedule[course][i][0]],schedule[course][i][1]])
 		}
