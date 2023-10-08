@@ -223,6 +223,7 @@ function check_done(){
 function make_schedule(){
 	var sched = {}
 	total_matches.forEach(m => {
+		// m is [[course, ta], hours_alloted]
 		if (!(m[0][0] in sched))
 			sched[m[0][0]] = []
 		if (!m[0][0].includes('dummy') && !m[0][1].includes('dummy'))
@@ -268,6 +269,7 @@ function run_all() {
 			}
 		}
 		
+		// Why is make_schedule called twice?
 		const [complications, working_matches] = validate_schedule(make_schedule(), courses)
 		if (complications.length < comp){
 			schedule = make_schedule()
