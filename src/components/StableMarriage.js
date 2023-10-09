@@ -317,6 +317,13 @@ function validate_schedule(schedule, courses){
 	return [complications, working_matches]
 }
 
+// Adding course name 
+function course_name(course){
+	const current_course = courses.find(c => c.CRN === course);
+    const course_name = 'COMP ' + current_course.course_number;
+	return course_name;
+}
+
 
 
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
@@ -409,7 +416,7 @@ return (
 					<tbody>
 					{Object.keys(history[0][0]).map((course, index) => (
 						<tr  key={index}>
-							<td>COMP</td>
+							<td>{course_name(course)}</td>
 							<td>{course}</td>
 							{/* <td>{remaining_hours_men[course]}</td> */}
 							<td>{history[0][0][course][0][0]}</td>
@@ -440,7 +447,7 @@ return (
 						{/* Goes through the first list (history[0]) and takes each conflict report for the list and displays its contents*/}
 						{history[0][1].map(conflict => 
 							<tr> 
-								<td>COMP </td>
+								<td>{course_name(conflict[0])}</td>
 								<td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
 								<td>{conflict[1]}</td>
 								<td>{conflict[2]}</td>
@@ -477,7 +484,7 @@ return (
 					<tbody>
 					{Object.keys(history[1][0]).map((course, index) => (
 						<tr  key={index} >
-							<td>COMP</td>
+							<td>{course_name(course)}</td>
 							<td>{course}</td>
 							{/* <td>{remaining_hours_men[course]}</td> */}
 							<td>{history[1][0][course][0][0]}</td>
@@ -508,7 +515,7 @@ return (
 					<tbody>
 						{history[1][1].map(conflict => 
 							<tr> 
-								<td>COMP</td>
+								<td>{course_name(conflict[0])}</td>
 								<td>{conflict[0]}</td>
 								<td>{conflict[1]}</td>
 								<td>{conflict[2]}</td>
@@ -545,7 +552,7 @@ return (
 					<tbody>
 					{Object.keys(history[2][0]).map((course, index) => (
 						<tr  key={index} >
-							<td>COMP</td>
+							<td>{course_name(course)}</td>
 							<td>{course}</td>
 							{/* <td>{remaining_hours_men[course]}</td> */}
 							<td>{history[2][0][course][0][0]}</td>
@@ -576,7 +583,7 @@ return (
 					<tbody>
 						{history[2][1].map(conflict => 
 							<tr> 
-								<td>COMP </td>
+								<td>{course_name(conflict[0])}</td>
 								<td>{conflict[0]}</td>
 								<td>{conflict[1]}</td>
 								<td>{conflict[2]}</td>
