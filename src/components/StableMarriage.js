@@ -299,21 +299,27 @@ function validate_schedule(schedule, courses){
 	var working_matches = []
 	for (let course in schedule){
 
-		const l = schedule[course].length
+		const l = schedule[course].length;
 		if (l >= 3)
 			complications.push(course + " has " + l + " tas.")
 		for (var i = 0; i < l; i++){
 			if (schedule[course][i][0] === '')
 				continue;
-			const current_course = courses.find(c => c.CRN === course)
-			if (!current_course.teacher_assistants.some(item => item.able_TA === schedule[course][i][0]))
-				complications.push(schedule[course][i][0] + "-"+  tas.find(t => t.uuid === schedule[course][i][0]).firstName + " " + tas.find(t => t.uuid === schedule[course][i][0]).lastName + ' not eligible for ' + course)
+			const current_course = courses.find(c => c.CRN === course);
+
+			let course_ta = current_course.teacher_assistants.some(item => item.TAID === schedule[course][i][0]);
+			if (!course_ta.able) {
+				let curTA_uuid = schedule[course][i][0];
+				let curTA = tas.find(t => t.uuid === curTA_uuid);
+				let reasons = course_ta.reason;
+				complications.push(course_ta.TAID + "-"+  curTA.firstName + " " + curTA.lastName + ' is not eligible for ' + course + ' because ' + reasons);
+			}
 			else
 				working_matches.push([[course, schedule[course][i][0]],schedule[course][i][1]])
 		}
 	}
-	return [complications, working_matches]
-}
+	return [complications, working_matches];
+};
 
 
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
@@ -339,7 +345,7 @@ function convertToCSV(schedule, remaining_hours_men) {
 				schedule[course][2][0],
 				schedule[course][2][1],	
 				'|',			
-			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_TA).sort())
+			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_map).sort())
 			);
 		}else{
 			rows.push([        
@@ -352,7 +358,7 @@ function convertToCSV(schedule, remaining_hours_men) {
 				'',
 				'',
 				'|',
-			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_TA).sort())
+			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_map).sort())
 			);
 		}
     });

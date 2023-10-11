@@ -35,7 +35,6 @@ function CreateEligList(props){
         4882: [4882, 7012, 8012, 7081, 8081, 7087, 8087],
         6030: [7712, 7295, 7713, 7992, 8295, 8712, 8713, 8992 ],
         6118: [7118, 8118],
-        6118: [7118, 8118],
         6430: [8125, 8125],
         7012: [7012, 8012],
         7081: [7081, 8081],
@@ -100,6 +99,89 @@ function CreateEligList(props){
             return militaryTimeString;
             
         }
+    
+    // Pushes a reason why a specific TA isn't eligible to assist in a specific course to the class list
+    function pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, is_able, reasons) {
+        let rowData = {
+            CRN: curCRN,
+            course_number: curCrse,
+            taHours: taHours,
+            totalEnrolled: enrollment,
+            TAID: curTAID,
+            reason: reasons,
+            able: is_able,
+        };
+
+        // check if this CRN already has a row
+        let existingRow = class_list.find((r) => {
+            return (
+                r.CRN == "" + rowData.CRN
+            );
+        });
+
+        // if CRN already has row, add TA to list
+        if (existingRow) {
+
+            if (!existingRow.teacher_assistants.some((ta) => ta.TAID == rowData.TAID)){
+
+                if (is_able) {
+                    existingRow.teacher_assistants.push({
+                        TAID: rowData.TAID,
+                        able: true,
+                        
+                        able_map: rowData.TAID
+                    });
+                }
+                else {
+                    existingRow.teacher_assistants.push({
+                        TAID: rowData.TAID,
+                        able: false,
+                        
+                        reason: rowData.reason
+                    });
+                }
+            }
+
+            return
+        }
+
+        // Create new row for CRN if no row already exists for it
+        let newRow
+
+        if (is_able) {
+            newRow = {
+                CRN: rowData.CRN,
+                course_number: rowData.course_number,
+                taHours: taHours,
+                totalEnrolled: enrollment,
+                teacher_assistants: [
+                    {
+                        TAID: rowData.TAID,
+                        able: true,
+
+                        able_map: rowData.TAID,
+                    },
+                ],
+            };
+        }
+        else {
+            newRow = {
+                CRN: rowData.CRN,
+                course_number: rowData.course_number,
+                taHours: taHours,
+                totalEnrolled: enrollment,
+                teacher_assistants: [
+                    {
+                        TAID: rowData.TAID,
+                        able: false,
+                        reason: rowData.reason
+                    },
+                ],
+            };
+        }
+        
+        class_list.push(newRow);
+    };
 
 
     function handleEligibilityList(){
@@ -159,15 +241,14 @@ function CreateEligList(props){
                 if (takenCourse.semester === semester && takenCourse.year === year){ // if TA is currently taking course they aren't eligible
                     continue;
                 }
-                else{ // TA has taken this course in a previous semester, not current one 
-                    if (takenCourseNumber === curCrse && (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')){
-                        hasTakenClass = true;
-                    }
-                    else if (qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))){
-                        hasTakenQualifiedClass = true;
-                    }
+                // TA has taken this course in a previous semester, not current one 
+                if (takenCourseNumber === curCrse && (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')){
+                    hasTakenClass = true;
                 }
-                
+                else if (qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))){
+                    hasTakenQualifiedClass = true;
+                }
+            
             }
 
             if (hasTakenClass === true || hasTakenQualifiedClass === true){ // if TA has taken the class or taken an eligible class
@@ -207,49 +288,32 @@ function CreateEligList(props){
             }
 
             if (timeEligible === true && (hasTakenClass === true || hasTakenQualifiedClass === true)){ // TA is time eligible and has taken class
-                const rowData = {
-                    CRN: curCRN,
-                    course_number: curCrse,
-                    taHours: taHours,
-                    totalEnrolled: enrollment,
-                    able_TA: curTAID,
-                };
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable");
+                continue;
+            }
 
-                // check if this CRN already has a row
-                let existingRow = class_list.find((r) => {
-                    return (
-                        r.CRN == rowData.CRN
-                    );
-                });
+            // If we get here, then the TA is not eligible so, we save the reason why they aren't eligible
+            // To confirm that there's nothing left to do with this TA, a continue statement is in every "if" block throughout the rest of this loop
+            // TL;DR: "else if" can get messy, so "continue" was used instead
 
-                // if CRN already has row, add TA to list of eligible TAs
-                if (existingRow) {
+            if (timeEligible === false) {
+                // push newRow to "classList"
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "doesn't have the time required to TA for this course.");
+                continue;
+            }
 
-                    if (!existingRow.teacher_assistants.some((ta) => ta.able_TA == rowData.able_TA)){
-                        existingRow.teacher_assistants.push({
-                            able_TA: rowData.able_TA,
-                        });
-                    }                      
-                }
+            if (hasTakenQualifiedClass === false) {
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "has not taken a qualified class for this course,");
+                continue;
+            }
 
-                // Create new row for CRN if no row already exists for it
-                else {
-    
-                    const newRow = {
-                        CRN: rowData.CRN,
-                        course_number: rowData.course_number,
-                        taHours: taHours,
-                        totalEnrolled: enrollment,
-                        teacher_assistants: [
-                            {
-                                able_TA: rowData.able_TA,
-                            },
-                        ],
-                    };
-                    class_list.push(newRow);
+            if (hasTakenClass === false) {
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "has not taken this course.");
+                continue;
             }
         }
-    }
+
+        continue;
         // Check if a row has been created for the current courses CRN
         let anyOptions = class_list.find((t) => {
             return(
@@ -264,7 +328,7 @@ function CreateEligList(props){
                 totalEnrolled: enrollment,
                 teacher_assistants: [
                     {
-                    able_TA: "No eligible Teacher Assistants",
+                    TAID: "No eligible Teacher Assistants",
                     },
                 ],
             };
