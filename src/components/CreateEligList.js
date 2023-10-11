@@ -223,9 +223,12 @@ function CreateEligList(props){
 
 
             let timeEligible = true;
-            let onlineClass = false 
-            let hasTakenClass = false;
-            let hasTakenQualifiedClass = false;
+            let onlineClass = false ;
+            // This used to be two variables: hasTakenClass and hasTakenQualifiedClass
+            // The reason why this was converged into one variable is because a TA is only ineligible if both variables are false
+            //  If at least one is true, the TA would be eligible, so the information about the false variable would be lost by design
+            //  So, they were merged
+            let hasTakenClassOrQualifiedClass = false;
 
             for (let k = 0; k < curTA.length; k++){
                 const takenCourse = curTA[k];
@@ -243,15 +246,15 @@ function CreateEligList(props){
                 }
                 // TA has taken this course in a previous semester, not current one 
                 if (takenCourseNumber === curCrse && (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')){
-                    hasTakenClass = true;
+                    hasTakenClassOrQualifiedClass = true;
                 }
                 else if (qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))){
-                    hasTakenQualifiedClass = true;
+                    hasTakenClassOrQualifiedClass = true;
                 }
             
             }
 
-            if (hasTakenClass === true || hasTakenQualifiedClass === true){ // if TA has taken the class or taken an eligible class
+            if (hasTakenClassOrQualifiedClass === true){ // if TA has taken the class or taken an eligible class
                 for (let x = 0; x < curTA.length; x++){ // iterate through each class TA has taken
                     const takingCourse = curTA[x];
 
@@ -287,7 +290,7 @@ function CreateEligList(props){
                 }
             }
 
-            if (timeEligible === true && (hasTakenClass === true || hasTakenQualifiedClass === true)){ // TA is time eligible and has taken class
+            if (timeEligible === true && hasTakenClassOrQualifiedClass === true){ // TA is time eligible and has taken the class or taken an eligible class
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable");
                 continue;
             }
@@ -297,44 +300,15 @@ function CreateEligList(props){
             // TL;DR: "else if" can get messy, so "continue" was used instead
 
             if (timeEligible === false) {
-                // push newRow to "classList"
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "doesn't have the time required to TA for this course.");
                 continue;
             }
 
-            if (hasTakenQualifiedClass === false) {
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "has not taken a qualified class for this course,");
-                continue;
-            }
-
-            if (hasTakenClass === false) {
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "has not taken this course.");
+            if (hasTakenClassOrQualifiedClass === false) {
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "has not taken this course nor a qualifying course.");
                 continue;
             }
         }
-
-        continue;
-        // Check if a row has been created for the current courses CRN
-        let anyOptions = class_list.find((t) => {
-            return(
-                t.CRN == curCRN
-            )
-        });
-        if (!anyOptions) { //if no row has been made, this means no TA is eligible, therefore, create row with this information
-            const emptyData = {
-                CRN: curCRN,
-                course_number: curCrse,
-                taHours: taHours,
-                totalEnrolled: enrollment,
-                teacher_assistants: [
-                    {
-                    TAID: "No eligible Teacher Assistants",
-                    },
-                ],
-            };
-            class_list.push(emptyData);
-        }
-
     }
 
     console.log(class_list);
