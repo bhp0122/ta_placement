@@ -44,7 +44,7 @@ function createTAHierarchy(c, course, tas, t){
 	// orders preferred list of TAs if ta in able_ta list ranked ahead of others
 	// Otherwise orders based on Even or odd in order to assign 15 hours to 15 hours or 5 to 5 or 20 to 20 and finally from highest to least
 	tas.sort((a, b) => {
-		if (c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_TA === a) && c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_TA === b)){
+		if (c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_map === a) && c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_map === b)){
 			// return t.find(item => item.uuid === b).taHours - t.find(item => item.uuid === a).taHours
 			const a_hours_even = t.find(item => item.uuid === a).taHours % 2 == 0
 			const b_hours_even = t.find(item => item.uuid === b).taHours % 2 == 0
@@ -57,9 +57,9 @@ function createTAHierarchy(c, course, tas, t){
 				return 1;
 			}
 			return t.find(item => item.uuid === b).taHours - t.find(item => item.uuid === a).taHours;
-		} else if (c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_TA === a)){
+		} else if (c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_map === a)){
 			return -1;
-		} else if (c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_TA === b)){
+		} else if (c.find(item => item.CRN === course).teacher_assistants.some(item => item.able_map === b)){
 			return 1;
 		} else {
 			const a_hours_even = t.find(item => item.uuid === a).taHours % 2 == 0
@@ -81,12 +81,12 @@ function createTAHierarchy(c, course, tas, t){
 function createCourseHierarchyForTA(ta, c, courses){
 
 	courses.sort((a, b) => {
-		if (c.find(item => item.CRN === a).teacher_assistants.some(item => item.able_TA === ta) && c.find(item => item.CRN === b).teacher_assistants.some(item => item.able_TA === ta)){
+		if (c.find(item => item.CRN === a).teacher_assistants.some(item => item.able_map === ta) && c.find(item => item.CRN === b).teacher_assistants.some(item => item.able_map === ta)){
 			// if both in ta list, randomize
 			return randomOneOrMinusOne();
-		} else if (c.find(item => item.CRN === a).teacher_assistants.some(item => item.able_TA === ta)){
+		} else if (c.find(item => item.CRN === a).teacher_assistants.some(item => item.able_map === ta)){
 			return -1;
-		} else if (c.find(item => item.CRN === b).teacher_assistants.some(item => item.able_TA === ta)){
+		} else if (c.find(item => item.CRN === b).teacher_assistants.some(item => item.able_map === ta)){
 			return 1;
 		}
 	})
