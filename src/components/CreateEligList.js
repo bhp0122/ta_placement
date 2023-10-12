@@ -300,12 +300,12 @@ function CreateEligList(props){
             // TL;DR: "else if" can get messy, so "continue" was used instead
 
             if (timeEligible === false) {
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "doesn't have the time required to TA for this course.");
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
                 continue;
             }
 
             if (hasTakenClassOrQualifiedClass === false) {
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "has not taken this course nor a qualifying course.");
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Has not taken this course nor a qualifying course");
                 continue;
             }
         }
