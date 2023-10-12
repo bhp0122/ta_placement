@@ -314,7 +314,7 @@ function validate_schedule(schedule, courses){
 				let curTA = tas.find(t => t.uuid === curTA_uuid);
 				let reasons = course_ta.reason;
 				// Changed complications from having only one index to having multiple indices for easibility in retrieving information
-				complications.push([course, curTA_uuid, curTA_uuid.firstName, curTA_uuid.lastName, reasons])
+				complications.push([course, curTA_uuid, curTA.firstName, curTA.lastName, reasons])
 			}
 			else {
 				working_matches.push([[course, schedule[course][i][0]],schedule[course][i][1]])
