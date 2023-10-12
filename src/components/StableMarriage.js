@@ -302,7 +302,7 @@ function validate_schedule(schedule, courses){
 
 		const l = schedule[course].length;
 		if (l >= 3)
-			complications.push([course, "", "", "", "Has " + l + " TAs."])
+			complications.push([course, "", "", "", "This course has " + l + " TAs"])
 		for (var i = 0; i < l; i++){
 			if (schedule[course][i][0] === '')
 				continue;
