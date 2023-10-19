@@ -219,46 +219,66 @@ function CreateEligList(props){
 
         for (let j = 0; j < all_TAs.length; j++){
             const curTAID = all_TAs[j].uuid;
-            const curTA = all_TAs[j].courses; // list of every class that current TA being evaluated has taken
+            const curTACourses = all_TAs[j].courses; // list of every class that the current TA being evaluated has taken
+
+            // Determines if the TA was already scheduled to TA
 
 
             let timeEligible = true;
-            let onlineClass = false ;
-            // This used to be two variables: hasTakenClass and hasTakenQualifiedClass
-            // The reason why this was converged into one variable is because a TA is only ineligible if both variables are false
-            //  If at least one is true, the TA would be eligible, so the information about the false variable would be lost by design
-            //  So, they were merged
-            let hasTakenClassOrQualifiedClass = false;
+            let finishedCourse = true;
+            
+            let courseEligible = false;
+            
+            // The TA is eligible for this course if their grade for this course is A- or higher, or they took a qualifying course with a grade of -A or higher
+            // So, we loop over all of the courses that the TA has been to (no matter if they have taken it or are taking it)
+            for (let k = 0; k < curTACourses.length; k++){
+                let takenCourse = curTACourses[k];
+                let takenCourseNumber = takenCourse.courseNumber;
 
-            for (let k = 0; k < curTA.length; k++){
-                const takenCourse = curTA[k];
-                const takenCourseNumber = takenCourse.courseNumber;
+                let gradeEligible = (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')
 
-
-                //console.log(takenCourse);
-
-    
-                const daysOfTakingCourse = takenCourse.days;
-
-
-                if (takenCourse.semester === semester && takenCourse.year === year){ // if TA is currently taking course they aren't eligible
+                // if TA is currently taking the course, they aren't eligible
+                if (takenCourse.semester === semester && takenCourse.year === year){
+                    finishedCourse = false;
                     continue;
                 }
+
+                let hasTakenClass = takenCourseNumber === curCrse
+
                 // TA has taken this course in a previous semester, not current one 
-                if (takenCourseNumber === curCrse && (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')){
-                    hasTakenClassOrQualifiedClass = true;
+                if (hasTakenClass && gradeEligible){
+                    courseEligible = true;
+                    continue;
                 }
-                else if (qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))){
-                    hasTakenClassOrQualifiedClass = true;
+                
+                let hasTakenQualifiedClass = qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))
+
+                // If the TA has taken a qualifying course in a previous semester
+                if (hasTakenQualifiedClass && gradeEligible){
+                    courseEligible = true;
+                    continue;
                 }
-            
+
+                // If we get here, then "gradeEligible" should be false
+                // So, we run one more check for a course match and a qualifying course match before sending a conflict reason
+                if (hasTakenClass) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Grade is too low in this class: expected A- or higher, but got " + takenCourse.grade);
+                    continue;
+                }
+                if (hasTakenQualifiedClass) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Grade is too low in qualifying class COMP ${curCrse}: expected A- or higher, but got `)
+                    continue;
+                }
+
+                // If we get here, then the TA hasn't taken the matched course, nor any qualifying course
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `TA has not taken COMP ${curCrse}, nor any of the qualifying classes: COMP ${qualifiedCourses}`);
             }
 
-            if (hasTakenClassOrQualifiedClass === true){ // if TA has taken the class or taken an eligible class
-                for (let x = 0; x < curTA.length; x++){ // iterate through each class TA has taken
-                    const takingCourse = curTA[x];
+            if (courseEligible === true){ // if TA has taken the class or taken an eligible class
+                for (let x = 0; x < curTACourses.length; x++){ // iterate through each class the TA has taken
+                    const takingCourse = curTACourses[x];
 
-                    const daysOfTakingCourse = curTA[x].days
+                    const daysOfTakingCourse = curTACourses[x].days
 
                     if (takingCourse.semester === semester && takingCourse.year === year){ // if class that is being checked is happening this semester
 
@@ -271,13 +291,12 @@ function CreateEligList(props){
                                     const class_TA_taking_start_time = parseInt(takingCourse.startTime); //start time of class that TA is taking current semester
 
                                     const class_TA_taking_end_time = parseInt(takingCourse.stopTime); //stop time of class that TA is taking current semester
-                                    // check if current class and class TA is taking overlap in time at all
+                                    // check if current class and class that the TA is taking is overlapping in time at all
                                     if ((curStartTime - class_TA_taking_start_time >= 0 && curStartTime - class_TA_taking_end_time <= 0) || (curEndTime - class_TA_taking_start_time >= 0 && curEndTime - class_TA_taking_end_time <= 0)){
                                         timeEligible = false;
                                     }
-                                    if ((class_TA_taking_start_time - curStartTime >= 0 && class_TA_taking_start_time - curEndTime <= 0) || (class_TA_taking_end_time - curStartTime >= 0 && class_TA_taking_end_time - curEndTime <= 0)){
+                                    else if ((class_TA_taking_start_time - curStartTime >= 0 && class_TA_taking_start_time - curEndTime <= 0) || (class_TA_taking_end_time - curStartTime >= 0 && class_TA_taking_end_time - curEndTime <= 0)){
                                         timeEligible = false;
-
                                     }
                                 }
                             }
@@ -290,22 +309,13 @@ function CreateEligList(props){
                 }
             }
 
-            if (timeEligible === true && hasTakenClassOrQualifiedClass === true){ // TA is time eligible and has taken the class or taken an eligible class
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable");
+            if (timeEligible === true && courseEligible === true){ // TA is time eligible and has taken the class or taken an eligible class
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable; TA is eligible");
                 continue;
             }
-
-            // If we get here, then the TA is not eligible so, we save the reason why they aren't eligible
-            // To confirm that there's nothing left to do with this TA, a continue statement is in every "if" block throughout the rest of this loop
-            // TL;DR: "else if" can get messy, so "continue" was used instead
 
             if (timeEligible === false) {
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
-                continue;
-            }
-
-            if (hasTakenClassOrQualifiedClass === false) {
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Has not taken this course nor a qualifying course");
                 continue;
             }
         }
