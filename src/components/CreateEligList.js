@@ -271,7 +271,11 @@ function CreateEligList(props){
                 }
 
                 // If we get here, then the TA hasn't taken the matched course, nor any qualifying course
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `TA has not taken COMP ${curCrse}, nor any of the qualifying classes: COMP ${qualifiedCourses}`);
+                let unmatchedClassesReason = `TA has not taken COMP ${curCrse}`
+                if (qualifiedCourses) {
+                    unmatchedClassesReason += `, nor any of the qualifying classes: COMP ${qualifiedCourses}`
+                }
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, unmatchedClassesReason);
             }
 
             if (courseEligible === true){ // if TA has taken the class or taken an eligible class
