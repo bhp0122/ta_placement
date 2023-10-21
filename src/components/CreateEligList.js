@@ -14,7 +14,7 @@ function CreateEligList(props){
     const semester = "Spring";
 
     const QUALIFIED_COURSES = {
-        1900: [3115, 3825, 4030, 4040, 4081, 4118, 4151, 4270, 4272, 4302, 4310, 4410, 4420, 4430, 4601, 4720, 4745, 4882, 6010, 6030, 6040, 6118, 6270, 6272, 6302, 6410, 7012, 7081, 7085, 7087, 7115, 7116, 7118, 7120, 7125, 7130, 7150, 7212, 7282, 7290, 7295, 7311, 7313, 7327, 7514, 7612, 7712, 7713, 7720, 7740, 7745, 7760, 7770, 7780, 7991, 7992, 7998, 7999, 8012, 8081, 8085, 8087, 8120, 8125, 8130, 8150, 8212, 8282, 8290, 8295, 8311, 8313, 8327, 8514, 8612, 8712, 8713, 8720, 8740, 8745, 8760, 8770, 8780, 8991, 8992, 8998, 8999],
+        1900: [1900, 3115, 3825, 4030, 4040, 4081, 4118, 4151, 4270, 4272, 4302, 4310, 4410, 4420, 4430, 4601, 4720, 4745, 4882, 6010, 6030, 6040, 6118, 6270, 6272, 6302, 6410, 7012, 7081, 7085, 7087, 7115, 7116, 7118, 7120, 7125, 7130, 7150, 7212, 7282, 7290, 7295, 7311, 7313, 7327, 7514, 7612, 7712, 7713, 7720, 7740, 7745, 7760, 7770, 7780, 7991, 7992, 7998, 7999, 8012, 8081, 8085, 8087, 8120, 8125, 8130, 8150, 8212, 8282, 8290, 8295, 8311, 8313, 8327, 8514, 8612, 8712, 8713, 8720, 8740, 8745, 8760, 8770, 8780, 8991, 8992, 8998, 8999],
         3115: [3115, 7115, 8115, 7116, 8116],
         3825: [3825, 7120, 8120, 7311, 8311, 7313, 8313],
         4030: [4030, 6030, 7295, 8295, 7712, 8712, 7713, 8713, 7992, 8992],
@@ -100,7 +100,7 @@ function CreateEligList(props){
             
         }
     
-    // Pushes a reason why a specific TA isn't eligible to assist in a specific course to the class list
+    // Pushes the TA's eligibilty status to the class list (including a reason if they are not eligible)
     function pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, is_able, reasons) {
         let rowData = {
             CRN: curCRN,
@@ -225,11 +225,9 @@ function CreateEligList(props){
 
 
             let timeEligible = true;
-            let finishedCourse = true;
-            
             let courseEligible = false;
             
-            // The TA is eligible for this course if their grade for this course is A- or higher, or they took a qualifying course with a grade of -A or higher
+            // The TA is eligible for this course if their grade for this course is -A or higher, or they took a qualifying course with a grade of -A or higher
             // So, we loop over all of the courses that the TA has been to (no matter if they have taken it or are taking it)
             for (let k = 0; k < curTACourses.length; k++){
                 let takenCourse = curTACourses[k];
@@ -239,7 +237,7 @@ function CreateEligList(props){
 
                 // if TA is currently taking the course, they aren't eligible
                 if (takenCourse.semester === semester && takenCourse.year === year){
-                    finishedCourse = false;
+                    // This is not currently planned to have a conflict reasoning
                     continue;
                 }
 
@@ -262,18 +260,49 @@ function CreateEligList(props){
                 // If we get here, then "gradeEligible" should be false
                 // So, we run one more check for a course match and a qualifying course match before sending a conflict reason
                 if (hasTakenClass) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Grade is too low in this class: expected A- or higher, but got " + takenCourse.grade);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${curCrse})`);
                     continue;
                 }
                 if (hasTakenQualifiedClass) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Grade is too low in qualifying class COMP ${curCrse}: expected A- or higher, but got `)
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${curCrse})`)
                     continue;
                 }
 
                 // If we get here, then the TA hasn't taken the matched course, nor any qualifying course
-                let unmatchedClassesReason = `TA has not taken COMP ${curCrse}`
-                if (qualifiedCourses) {
-                    unmatchedClassesReason += `, nor any of the qualifying classes: COMP ${qualifiedCourses}`
+                if (!qualifiedCourses) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
+                    continue;
+                }
+                
+                // The COMP 1900 qualified courses list is very long
+                // So, if that course is what we're dealing with, we return a conflict stating that the TA has not taken a class in COMP before
+                if (QUALIFIED_COURSES[1900] === qualifiedCourses) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `No COMP class taken`);
+                    continue;
+                }
+                
+                let unmatchedClassesReason = `COMP`
+                for (let index = 0; index < qualifiedCourses.length; index++) {
+                    let qualifedCourse = qualifiedCourses[index]
+                    // This is for if we're at the end of the list
+                    if (index + 1 === qualifiedCourses.length) {
+                        // This if for if there are only two items in the list
+                        if (index === 1) {
+                            unmatchedClassesReason += ` or ${qualifedCourse} not taken`;
+                            break;
+                        }
+                        
+                        unmatchedClassesReason += `, or ${qualifedCourse} not taken`;
+                        break;
+                    }
+                    
+                    // This is for if we are on the first item in the list
+                    if (index === 0) {
+                        unmatchedClassesReason += ` ${qualifedCourse}`;
+                        continue;
+                    }
+                    
+                    unmatchedClassesReason += `, ${qualifedCourse}`;
                 }
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, unmatchedClassesReason);
             }
@@ -313,15 +342,23 @@ function CreateEligList(props){
                 }
             }
 
-            if (timeEligible === true && courseEligible === true){ // TA is time eligible and has taken the class or taken an eligible class
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable; TA is eligible");
-                continue;
-            }
-
             if (timeEligible === false) {
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
                 continue;
             }
+            
+            // At this point, the TA is time eligible, and has taken the class or taken an eligible class with a high enough grade
+
+            // Since "timeEligible" defaults to true, if "courseEligible" is false, the above if statement will be skipped
+            // "timeEligible" should not default to false (the if statement below should not be removed) since a failed eligiblity check will improperly enter the above if statement
+            // Instead, an error ineligibly reason is given at the end of the loop
+            if (courseEligible === true){ 
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable; TA is eligible");
+                continue;
+            }
+
+            // As stated above, if we get here, we don't know what happened
+            pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "TA is not eligible for an unknown reason?");
         }
     }
 
