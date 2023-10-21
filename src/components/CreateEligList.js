@@ -260,11 +260,11 @@ function CreateEligList(props){
                 // If we get here, then "gradeEligible" should be false
                 // So, we run one more check for a course match and a qualifying course match before sending a conflict reason
                 if (hasTakenClass) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${curCrse})`);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${takenCourseNumber})`);
                     continue;
                 }
                 if (hasTakenQualifiedClass) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${curCrse})`)
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${takenCourseNumber})`)
                     continue;
                 }
 
