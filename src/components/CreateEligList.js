@@ -277,7 +277,7 @@ function CreateEligList(props){
                 // The COMP 1900 qualified courses list is very long
                 // So, if that course is what we're dealing with, we return a conflict stating that the TA has not taken a class in COMP before
                 if (QUALIFIED_COURSES[1900] === qualifiedCourses) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `No COMP class taken`);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Not all COMP classes taken`);
                     continue;
                 }
                 
