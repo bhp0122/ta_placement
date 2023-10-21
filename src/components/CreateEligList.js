@@ -264,7 +264,7 @@ function CreateEligList(props){
                     continue;
                 }
                 if (hasTakenQualifiedClass) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${takenCourseNumber})`)
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in qualifying course (COMP ${takenCourseNumber})`)
                     continue;
                 }
 
