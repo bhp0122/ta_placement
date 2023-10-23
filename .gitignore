@@ -3,3 +3,4 @@
 # This is for a developer to track their changes of the app in a human readable way, and use the file to supply the "git commit" commant with a message
 # Read README.md's "Ease of Development" section for more details
 latest_commit.txt
+.vscode

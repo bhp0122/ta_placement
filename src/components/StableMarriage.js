@@ -223,6 +223,7 @@ function check_done(){
 function make_schedule(){
 	var sched = {}
 	total_matches.forEach(m => {
+		// m is [[course, ta], hours_alloted]
 		if (!(m[0][0] in sched))
 			sched[m[0][0]] = []
 		if (!m[0][0].includes('dummy') && !m[0][1].includes('dummy'))
@@ -268,6 +269,7 @@ function run_all() {
 			}
 		}
 		
+		// Why is make_schedule called twice?
 		const [complications, working_matches] = validate_schedule(make_schedule(), courses)
 		if (complications.length < comp){
 			schedule = make_schedule()
@@ -298,23 +300,28 @@ function validate_schedule(schedule, courses){
 	var working_matches = []
 	for (let course in schedule){
 
-		const l = schedule[course].length
+		const l = schedule[course].length;
 		if (l >= 3)
-			complications.push([course, "", "", "", "Has " + l + " TAs."])
+			complications.push([course, "", "", "", "This course has " + l + " TAs"])
 		for (var i = 0; i < l; i++){
 			if (schedule[course][i][0] === '')
 				continue;
 			const current_course = courses.find(c => c.CRN === course)
-			if (!current_course.teacher_assistants.some(item => item.able_TA === schedule[course][i][0])) {	
+
+			let course_ta = current_course.teacher_assistants.find(item => item.TAID === schedule[course][i][0]);
+			if (!course_ta.able) {	
+				let curTA_uuid = schedule[course][i][0];
+				let curTA = tas.find(t => t.uuid === curTA_uuid);
+				let reasons = course_ta.reason;
 				// Changed complications from having only one index to having multiple indices for easibility in retrieving information
-				complications.push([course, schedule[course][i][0], tas.find(t => t.uuid === schedule[course][i][0]).firstName, tas.find(t => t.uuid === schedule[course][i][0]).lastName, "Not Eligible"])
+				complications.push([course, curTA_uuid, curTA.firstName, curTA.lastName, reasons])
 			}
 			else {
 				working_matches.push([[course, schedule[course][i][0]],schedule[course][i][1]])
 			}
 		}
 	}
-	return [complications, working_matches]
+	return [complications, working_matches];
 }
 
 // Adding course name 
@@ -349,7 +356,7 @@ function convertToCSV(schedule, remaining_hours_men) {
 				schedule[course][2][0],
 				schedule[course][2][1],	
 				'|',			
-			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_TA).sort())
+			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_map).sort())
 			);
 		}else{
 			rows.push([        
@@ -362,7 +369,7 @@ function convertToCSV(schedule, remaining_hours_men) {
 				'',
 				'',
 				'|',
-			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_TA).sort())
+			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_map).sort())
 			);
 		}
     });

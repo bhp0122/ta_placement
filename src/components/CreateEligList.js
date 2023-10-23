@@ -14,7 +14,7 @@ function CreateEligList(props){
     const semester = "Spring";
 
     const QUALIFIED_COURSES = {
-        1900: [3115, 3825, 4030, 4040, 4081, 4118, 4151, 4270, 4272, 4302, 4310, 4410, 4420, 4430, 4601, 4720, 4745, 4882, 6010, 6030, 6040, 6118, 6270, 6272, 6302, 6410, 7012, 7081, 7085, 7087, 7115, 7116, 7118, 7120, 7125, 7130, 7150, 7212, 7282, 7290, 7295, 7311, 7313, 7327, 7514, 7612, 7712, 7713, 7720, 7740, 7745, 7760, 7770, 7780, 7991, 7992, 7998, 7999, 8012, 8081, 8085, 8087, 8120, 8125, 8130, 8150, 8212, 8282, 8290, 8295, 8311, 8313, 8327, 8514, 8612, 8712, 8713, 8720, 8740, 8745, 8760, 8770, 8780, 8991, 8992, 8998, 8999],
+        1900: [1900, 3115, 3825, 4030, 4040, 4081, 4118, 4151, 4270, 4272, 4302, 4310, 4410, 4420, 4430, 4601, 4720, 4745, 4882, 6010, 6030, 6040, 6118, 6270, 6272, 6302, 6410, 7012, 7081, 7085, 7087, 7115, 7116, 7118, 7120, 7125, 7130, 7150, 7212, 7282, 7290, 7295, 7311, 7313, 7327, 7514, 7612, 7712, 7713, 7720, 7740, 7745, 7760, 7770, 7780, 7991, 7992, 7998, 7999, 8012, 8081, 8085, 8087, 8120, 8125, 8130, 8150, 8212, 8282, 8290, 8295, 8311, 8313, 8327, 8514, 8612, 8712, 8713, 8720, 8740, 8745, 8760, 8770, 8780, 8991, 8992, 8998, 8999],
         3115: [3115, 7115, 8115, 7116, 8116],
         3825: [3825, 7120, 8120, 7311, 8311, 7313, 8313],
         4030: [4030, 6030, 7295, 8295, 7712, 8712, 7713, 8713, 7992, 8992],
@@ -34,7 +34,6 @@ function CreateEligList(props){
         4745: [4745, 7740, 8740, 7745, 8745],
         4882: [4882, 7012, 8012, 7081, 8081, 7087, 8087],
         6030: [7712, 7295, 7713, 7992, 8295, 8712, 8713, 8992 ],
-        6118: [7118, 8118],
         6118: [7118, 8118],
         6430: [8125, 8125],
         7012: [7012, 8012],
@@ -100,6 +99,89 @@ function CreateEligList(props){
             return militaryTimeString;
             
         }
+    
+    // Pushes the TA's eligibilty status to the class list (including a reason if they are not eligible)
+    function pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, is_able, reasons) {
+        let rowData = {
+            CRN: curCRN,
+            course_number: curCrse,
+            taHours: taHours,
+            totalEnrolled: enrollment,
+            TAID: curTAID,
+            reason: reasons,
+            able: is_able,
+        };
+
+        // check if this CRN already has a row
+        let existingRow = class_list.find((r) => {
+            return (
+                r.CRN == "" + rowData.CRN
+            );
+        });
+
+        // if CRN already has row, add TA to list
+        if (existingRow) {
+
+            if (!existingRow.teacher_assistants.some((ta) => ta.TAID == rowData.TAID)){
+
+                if (is_able) {
+                    existingRow.teacher_assistants.push({
+                        TAID: rowData.TAID,
+                        able: true,
+                        
+                        able_map: rowData.TAID
+                    });
+                }
+                else {
+                    existingRow.teacher_assistants.push({
+                        TAID: rowData.TAID,
+                        able: false,
+                        
+                        reason: rowData.reason
+                    });
+                }
+            }
+
+            return
+        }
+
+        // Create new row for CRN if no row already exists for it
+        let newRow
+
+        if (is_able) {
+            newRow = {
+                CRN: rowData.CRN,
+                course_number: rowData.course_number,
+                taHours: taHours,
+                totalEnrolled: enrollment,
+                teacher_assistants: [
+                    {
+                        TAID: rowData.TAID,
+                        able: true,
+
+                        able_map: rowData.TAID,
+                    },
+                ],
+            };
+        }
+        else {
+            newRow = {
+                CRN: rowData.CRN,
+                course_number: rowData.course_number,
+                taHours: taHours,
+                totalEnrolled: enrollment,
+                teacher_assistants: [
+                    {
+                        TAID: rowData.TAID,
+                        able: false,
+                        reason: rowData.reason
+                    },
+                ],
+            };
+        }
+        
+        class_list.push(newRow);
+    };
 
 
     function handleEligibilityList(){
@@ -137,44 +219,99 @@ function CreateEligList(props){
 
         for (let j = 0; j < all_TAs.length; j++){
             const curTAID = all_TAs[j].uuid;
-            const curTA = all_TAs[j].courses; // list of every class that current TA being evaluated has taken
+            const curTACourses = all_TAs[j].courses; // list of every class that the current TA being evaluated has taken
+
+            // Determines if the TA was already scheduled to TA
 
 
             let timeEligible = true;
-            let onlineClass = false 
-            let hasTakenClass = false;
-            let hasTakenQualifiedClass = false;
+            let courseEligible = false;
+            
+            // The TA is eligible for this course if their grade for this course is -A or higher, or they took a qualifying course with a grade of -A or higher
+            // So, we loop over all of the courses that the TA has been to (no matter if they have taken it or are taking it)
+            for (let k = 0; k < curTACourses.length; k++){
+                let takenCourse = curTACourses[k];
+                let takenCourseNumber = takenCourse.courseNumber;
 
-            for (let k = 0; k < curTA.length; k++){
-                const takenCourse = curTA[k];
-                const takenCourseNumber = takenCourse.courseNumber;
+                let gradeEligible = (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')
 
-
-                //console.log(takenCourse);
-
-    
-                const daysOfTakingCourse = takenCourse.days;
-
-
-                if (takenCourse.semester === semester && takenCourse.year === year){ // if TA is currently taking course they aren't eligible
+                // if TA is currently taking the course, they aren't eligible
+                if (takenCourse.semester === semester && takenCourse.year === year){
+                    // This is not currently planned to have a conflict reasoning
                     continue;
                 }
-                else{ // TA has taken this course in a previous semester, not current one 
-                    if (takenCourseNumber === curCrse && (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+')){
-                        hasTakenClass = true;
-                    }
-                    else if (qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))){
-                        hasTakenQualifiedClass = true;
-                    }
+
+                let hasTakenClass = takenCourseNumber === curCrse
+
+                // TA has taken this course in a previous semester, not current one 
+                if (hasTakenClass && gradeEligible){
+                    courseEligible = true;
+                    continue;
                 }
                 
+                let hasTakenQualifiedClass = qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))
+
+                // If the TA has taken a qualifying course in a previous semester
+                if (hasTakenQualifiedClass && gradeEligible){
+                    courseEligible = true;
+                    continue;
+                }
+
+                // If we get here, then "gradeEligible" should be false
+                // So, we run one more check for a course match and a qualifying course match before sending a conflict reason
+                if (hasTakenClass) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${takenCourseNumber})`);
+                    continue;
+                }
+                if (hasTakenQualifiedClass) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in qualifying course (COMP ${takenCourseNumber})`)
+                    continue;
+                }
+
+                // If we get here, then the TA hasn't taken the matched course, nor any qualifying course
+                if (!qualifiedCourses) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
+                    continue;
+                }
+                
+                // The COMP 1900 qualified courses list is very long
+                // So, if that course is what we're dealing with, we return a conflict stating that the TA has not taken a class in COMP before
+                if (QUALIFIED_COURSES[1900] === qualifiedCourses) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Not all qualified COMP 1900 classes taken`);
+                    continue;
+                }
+                
+                let unmatchedClassesReason = `COMP`
+                for (let index = 0; index < qualifiedCourses.length; index++) {
+                    let qualifedCourse = qualifiedCourses[index]
+                    // This is for if we're at the end of the list
+                    if (index + 1 === qualifiedCourses.length) {
+                        // This if for if there are only two items in the list
+                        if (index === 1) {
+                            unmatchedClassesReason += ` or ${qualifedCourse} not taken`;
+                            break;
+                        }
+                        
+                        unmatchedClassesReason += `, or ${qualifedCourse} not taken`;
+                        break;
+                    }
+                    
+                    // This is for if we are on the first item in the list
+                    if (index === 0) {
+                        unmatchedClassesReason += ` ${qualifedCourse}`;
+                        continue;
+                    }
+                    
+                    unmatchedClassesReason += `, ${qualifedCourse}`;
+                }
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, unmatchedClassesReason);
             }
 
-            if (hasTakenClass === true || hasTakenQualifiedClass === true){ // if TA has taken the class or taken an eligible class
-                for (let x = 0; x < curTA.length; x++){ // iterate through each class TA has taken
-                    const takingCourse = curTA[x];
+            if (courseEligible === true){ // if TA has taken the class or taken an eligible class
+                for (let x = 0; x < curTACourses.length; x++){ // iterate through each class the TA has taken
+                    const takingCourse = curTACourses[x];
 
-                    const daysOfTakingCourse = curTA[x].days
+                    const daysOfTakingCourse = curTACourses[x].days
 
                     if (takingCourse.semester === semester && takingCourse.year === year){ // if class that is being checked is happening this semester
 
@@ -187,13 +324,12 @@ function CreateEligList(props){
                                     const class_TA_taking_start_time = parseInt(takingCourse.startTime); //start time of class that TA is taking current semester
 
                                     const class_TA_taking_end_time = parseInt(takingCourse.stopTime); //stop time of class that TA is taking current semester
-                                    // check if current class and class TA is taking overlap in time at all
+                                    // check if current class and class that the TA is taking is overlapping in time at all
                                     if ((curStartTime - class_TA_taking_start_time >= 0 && curStartTime - class_TA_taking_end_time <= 0) || (curEndTime - class_TA_taking_start_time >= 0 && curEndTime - class_TA_taking_end_time <= 0)){
                                         timeEligible = false;
                                     }
-                                    if ((class_TA_taking_start_time - curStartTime >= 0 && class_TA_taking_start_time - curEndTime <= 0) || (class_TA_taking_end_time - curStartTime >= 0 && class_TA_taking_end_time - curEndTime <= 0)){
+                                    else if ((class_TA_taking_start_time - curStartTime >= 0 && class_TA_taking_start_time - curEndTime <= 0) || (class_TA_taking_end_time - curStartTime >= 0 && class_TA_taking_end_time - curEndTime <= 0)){
                                         timeEligible = false;
-
                                     }
                                 }
                             }
@@ -206,71 +342,24 @@ function CreateEligList(props){
                 }
             }
 
-            if (timeEligible === true && (hasTakenClass === true || hasTakenQualifiedClass === true)){ // TA is time eligible and has taken class
-                const rowData = {
-                    CRN: curCRN,
-                    course_number: curCrse,
-                    taHours: taHours,
-                    totalEnrolled: enrollment,
-                    able_TA: curTAID,
-                };
-
-                // check if this CRN already has a row
-                let existingRow = class_list.find((r) => {
-                    return (
-                        r.CRN == rowData.CRN
-                    );
-                });
-
-                // if CRN already has row, add TA to list of eligible TAs
-                if (existingRow) {
-
-                    if (!existingRow.teacher_assistants.some((ta) => ta.able_TA == rowData.able_TA)){
-                        existingRow.teacher_assistants.push({
-                            able_TA: rowData.able_TA,
-                        });
-                    }                      
-                }
-
-                // Create new row for CRN if no row already exists for it
-                else {
-    
-                    const newRow = {
-                        CRN: rowData.CRN,
-                        course_number: rowData.course_number,
-                        taHours: taHours,
-                        totalEnrolled: enrollment,
-                        teacher_assistants: [
-                            {
-                                able_TA: rowData.able_TA,
-                            },
-                        ],
-                    };
-                    class_list.push(newRow);
+            if (timeEligible === false) {
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
+                continue;
             }
-        }
-    }
-        // Check if a row has been created for the current courses CRN
-        let anyOptions = class_list.find((t) => {
-            return(
-                t.CRN == curCRN
-            )
-        });
-        if (!anyOptions) { //if no row has been made, this means no TA is eligible, therefore, create row with this information
-            const emptyData = {
-                CRN: curCRN,
-                course_number: curCrse,
-                taHours: taHours,
-                totalEnrolled: enrollment,
-                teacher_assistants: [
-                    {
-                    able_TA: "No eligible Teacher Assistants",
-                    },
-                ],
-            };
-            class_list.push(emptyData);
-        }
+            
+            // At this point, the TA is time eligible, and has taken the class or taken an eligible class with a high enough grade
 
+            // Since "timeEligible" defaults to true, if "courseEligible" is false, the above if statement will be skipped
+            // "timeEligible" should not default to false (the if statement below should not be removed) since a failed eligiblity check will improperly enter the above if statement
+            // Instead, an error ineligibly reason is given at the end of the loop
+            if (courseEligible === true){ 
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable; TA is eligible");
+                continue;
+            }
+
+            // As stated above, if we get here, we don't know what happened
+            pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "TA is not eligible for an unknown reason?");
+        }
     }
 
     console.log(class_list);
