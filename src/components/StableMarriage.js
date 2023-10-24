@@ -337,7 +337,7 @@ function course_name(course){
 run_all()
 
 
-function convertToCSV(schedule, remaining_hours_men) {
+function convertToCSV(schedule, remaining_hours_men, courses) {
     const rows = [];
 	let headers = "Course,Remaining Hours,TA 1,TA 1 Hours,TA 2,TA 2 Hours,TA 3, TA 3 Hours,,Eligible TAs";
 
@@ -355,7 +355,7 @@ function convertToCSV(schedule, remaining_hours_men) {
 				schedule[course][1][1],
 				schedule[course][2][0],
 				schedule[course][2][1],	
-				'|',			
+				'|',
 			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_map).sort())
 			);
 		}else{
