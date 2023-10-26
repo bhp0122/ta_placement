@@ -19,7 +19,7 @@ function OnlyConflictsLayout(props) {
     return (
         <div class="container">
             <div class="row">
-                <div class="col" style={{width:480}}>
+                <div class="col">
                     <font color="red"><h1>Conflict Report 1</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -47,7 +47,7 @@ function OnlyConflictsLayout(props) {
                     </table>
                 </div>
 
-                <div class="col" style={{width:480}}>
+                <div class="col">
                     <font color="red"><h1>Conflict Report 2</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -75,7 +75,7 @@ function OnlyConflictsLayout(props) {
                     </table>
                 </div>
                 
-                <div class="col" style={{width:300}}>
+                <div class="col">
                     <font color="red"><h1>Conflict Report 3</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>

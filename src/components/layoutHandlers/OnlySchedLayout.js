@@ -1,6 +1,5 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-import Table from 'react-bootstrap/Table';
 
 function OnlySchedLayout(props) {
     const { coursesList, scheduleOne, scheduleTwo, scheduleThree } = props;
@@ -17,17 +16,17 @@ function OnlySchedLayout(props) {
     }
 
     function checkKeys(schedule) {
-        // hist will contain the schedule it is referencing and the course. 
-        if (Object.keys(schedule).length == 3) 
-            return [<td>{schedule[2][0]}</td>, <td>{schedule[2][1]}</td>]
+        console.log(schedule)
+        if (schedule.length >= 3) 
+            return [schedule[2][0], schedule[2][1]]
         else
-            return [<td></td>, <td></td>]
+            return ["", ""]
     }
 
     return (
         <div class="container">
             <div class="row">
-                <div class="col" style={{width:500}}>
+                <div class="col">
                     <h1>Schedule 1</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -52,14 +51,15 @@ function OnlySchedLayout(props) {
                                     <td>{scheduleOne[course][0][1]}</td>
                                     <td>{scheduleOne[course][1][0]}</td>
                                     <td>{scheduleOne[course][1][1]}</td>
-                                    {/* Data missing */}
+                                    <td>{checkKeys(scheduleOne[course])[0]}</td>
+                                    <td>{checkKeys(scheduleOne[course])[1]}</td>
                                 </tr>
                             )}   
                         </tbody>
                     </table>
                 </div>
 
-                <div class="col" style={{width:500}}>
+                <div class="col">
                     <h1>Schedule 2</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -84,13 +84,14 @@ function OnlySchedLayout(props) {
                                     <td>{scheduleTwo[course][0][1]}</td>
                                     <td>{scheduleTwo[course][1][0]}</td>
                                     <td>{scheduleTwo[course][1][1]}</td>
-                                    {/* Data missing */}
+                                    <td>{checkKeys(scheduleTwo[course])[0]}</td>
+                                    <td>{checkKeys(scheduleTwo[course])[1]}</td>
                                 </tr>
                             )}   
                         </tbody>
                     </table>
                  </div>
-                 <div class="col" style={{width:50}}>
+                 <div class="col">
                     <h1>Schedule 3</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -115,7 +116,8 @@ function OnlySchedLayout(props) {
                                     <td>{scheduleThree[course][0][1]}</td>
                                     <td>{scheduleThree[course][1][0]}</td>
                                     <td>{scheduleThree[course][1][1]}</td>
-                                    {/* Data missing */}
+                                    <td>{checkKeys(scheduleThree[course])[0]}</td>
+                                    <td>{checkKeys(scheduleThree[course])[1]}</td>
                                 </tr>
                             )}   
                         </tbody>

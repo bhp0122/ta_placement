@@ -14,10 +14,18 @@ function ColbyCol(props) {
         return course_name;
     }
 
+
+    function checkKeys(schedule) {
+        console.log(schedule)
+        if (schedule.length >= 3) 
+            return [schedule[2][0], schedule[2][1]]
+        else
+            return ["", ""]
+    } 
     return (
         <div>
             <div class="row">
-                <div class="col" style={{width:500}}>
+                <div class="col">
                     <h1>Schedule 1</h1>
                     <table class="table table-striped table-bordered table-sm">
                         <thead>
@@ -41,15 +49,15 @@ function ColbyCol(props) {
                                     <td>{reportOne[0][course][0][1]}</td>
                                     <td>{reportOne[0][course][1][0]}</td>
                                     <td>{reportOne[0][course][1][1]}</td>
-                                    {/* <td>{report_hist1["history1"][0][course][0]}</td>
-                                    <td>{report_hist1["history1"][0][course][1]}</td> */}
+                                    <td>{checkKeys(reportOne[0])[0]}</td>
+                                    <td>{checkKeys(reportOne[0])[1]}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
 
-                <div class="col" style={{width:500}}>
+                <div class="col">
                     <h1>Schedule 2</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -67,20 +75,20 @@ function ColbyCol(props) {
                         <tbody>
                             {Object.keys(reportTwo[0]).map((course, index) => (
                                 <tr  key={index}>
-                                    <td>{coursesList(course)}</td>
+                                    <td>{course_name(course)}</td>
                                     <td>{course}</td>
                                     <td>{reportTwo[0][course][0][0]}</td>
                                     <td>{reportTwo[0][course][0][1]}</td>
                                     <td>{reportTwo[0][course][1][0]}</td>
                                     <td>{reportTwo[0][course][1][1]}</td>
-                                    {/* <td>{report_hist1["history1"][0][course][0]}</td>
-                                    <td>{report_hist1["history1"][0][course][1]}</td> */}
+                                    <td>{checkKeys(reportTwo[0])[0]}</td>
+                                    <td>{checkKeys(reportTwo[0])[1]}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                <div class="col" style={{width:50}}>
+                <div class="col">
                     <h1>Schedule 3</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -104,8 +112,8 @@ function ColbyCol(props) {
                                     <td>{reportThree[0][course][0][1]}</td>
                                     <td>{reportThree[0][course][1][0]}</td>
                                     <td>{reportThree[0][course][1][1]}</td>
-                                    {/* <td>{report_hist1["history1"][0][course][0]}</td>
-                                    <td>{report_hist1["history1"][0][course][1]}</td> */}
+                                    <td>{checkKeys(reportThree[0])[0]}</td>
+                                    <td>{checkKeys(reportThree[0])[0]}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -114,7 +122,7 @@ function ColbyCol(props) {
             </div>
 
             <div class="row">
-                <div class="col" style={{width:500}}>
+                <div class="col">
                     <font color="red"><h1>Conflict Report 1</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -131,7 +139,7 @@ function ColbyCol(props) {
                             {reportOne[1].map(conflict => 
                                 <tr> 
                                     <td>{course_name(conflict[0])}</td>
-                                    <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
+                                    <td>{conflict[0]}</td>
                                     <td>{conflict[1]}</td>
                                     <td>{conflict[2]}</td>
                                     <td>{conflict[3]}</td>
@@ -142,7 +150,7 @@ function ColbyCol(props) {
                     </table>  
                 </div>
 
-                <div class="col" style={{width:500}}>
+                <div class="col">
                     <font color="red"><h1>Conflict Report 2</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
@@ -170,7 +178,7 @@ function ColbyCol(props) {
                     </table> 
                 </div>
 
-                <div class="col" style={{width:50}}>
+                <div class="col">
                     <font color="red"><h1>Conflict Report 3</h1></font>
                     <table class="table table-striped table-bordered table-sm">
                         <thead>

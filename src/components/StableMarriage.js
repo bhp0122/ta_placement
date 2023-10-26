@@ -8,6 +8,7 @@ import './AllClassesCSV.css';
 
 // Handles the displays for each of the layout options. 
 import ColbyCol from "./layoutHandlers/ColbyCol";
+import SidebySide from "./layoutHandlers/SidebySide";
 import OnlySchedLayout from "./layoutHandlers/OnlySchedLayout";
 import OnlyConflictsLayout from "./layoutHandlers/OnlyConflictsLayout";
 // Routing in order to switch user from one page to another. 
@@ -411,21 +412,24 @@ return (
 	<Router>
 		<div>
 			<Link to="/"><button type="button">Column View</button></Link>
+			<Link to="/side_view"><button type="button">Side View</button></Link>
 			<Link to="/schedules"><button type="button">Schedules</button></Link>
 			<Link to="/conflicts"><button type="button">Conflicts</button></Link>
 		</div>
+		<div>
+			<button value={0} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
+			<button value={1} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
+			<button value={2} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>
+		</div>
 		<Routes>
 				<Route path="/" element={ <ColbyCol coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
+				<Route path="/side_view" element={ <SidebySide coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
 				<Route path="/schedules" element={ <OnlySchedLayout coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
 				<Route path="/conflicts" element={ <OnlyConflictsLayout coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
 		</Routes>
 	</Router>
 
-	<div>
-		<button value={0} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
-		<button value={1} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
-		<button value={2} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>
-	</div>
+	
 </div>
 );
 }
