@@ -1,6 +1,5 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-import Table from 'react-bootstrap/Table';
 
 function OnlyConflictsLayout(props) {
     const { coursesList, conflictsOne, conflictsTwo, conflictsThree } = props
@@ -17,8 +16,8 @@ function OnlyConflictsLayout(props) {
     }
 
     return (
-        <div class="container">
-            <div class="row">
+        <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div class="row" style={{flexWrap:"nowrap"}}>
                 <div class="col">
                     <font color="red"><h1>Conflict Report 1</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">

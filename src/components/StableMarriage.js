@@ -339,11 +339,8 @@ function course_name(course){
 	return course_name;
 }
 
-
-
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
 run_all()
-
 
 function convertToCSV(schedule, remaining_hours_men) {
     const rows = [];
@@ -398,39 +395,32 @@ function handleDownload(event) {
 	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
 }
 
-// Check if there are more than three TAs for a schedule, and displays the TA in the Conflict Report if they exist. 
-function checkKeys(hist) {
-	// hist will contain the schedule it is referencing and the course. 
-	if (Object.keys(hist).length == 3) 
-		return [<td>{hist[2][0]}</td>, <td>{hist[2][1]}</td>]
-	else
-		return [<td></td>, <td></td>]
-}
-
 return (
-<div>
-	<Router>
-		<div>
-			<Link to="/"><button type="button">Column View</button></Link>
-			<Link to="/side_view"><button type="button">Side View</button></Link>
-			<Link to="/schedules"><button type="button">Schedules</button></Link>
-			<Link to="/conflicts"><button type="button">Conflicts</button></Link>
-		</div>
-		<div>
-			<button value={0} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
-			<button value={1} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
-			<button value={2} class="btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>
-		</div>
-		<Routes>
-				<Route path="/" element={ <ColbyCol coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
-				<Route path="/side_view" element={ <SidebySide coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
-				<Route path="/schedules" element={ <OnlySchedLayout coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
-				<Route path="/conflicts" element={ <OnlyConflictsLayout coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
-		</Routes>
-	</Router>
+	<div>
+		<Router>
+			<div class="w3-sidebar w3-bar-block" style={{width: "5%", position: "relative"}}>
+					<Link to="/" class="w3-bar-item w3-button w3-border-bottom">Column View</Link>
+					<Link to="/side_view" class="w3-bar-item w3-button w3-border-bottom">Side View</Link>
+					<Link to="/schedules" class="w3-bar-item w3-button w3-border-bottom">Schedules</Link>
+					<Link to="/conflicts" class="w3-bar-item w3-button w3-border-bottom ">Conflicts</Link>
+						
+					<button value={0} class="w3-bar-item btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
+					<button value={1} class="w3-bar-item btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
+					<button value={2} class="w3-bar-item btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>		
+			</div>
 
-	
-</div>
+			<div class="w3-container">
+				<Routes>
+					<Route path="/" element={ <ColbyCol coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
+					<Route path="/side_view" element={ <SidebySide coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
+					<Route path="/schedules" element={ <OnlySchedLayout coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
+					<Route path="/conflicts" element={ <OnlyConflictsLayout coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
+				
+				</Routes>
+			</div>
+
+		</Router>
+	</div>
 );
 }
 

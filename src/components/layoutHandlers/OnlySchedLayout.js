@@ -24,8 +24,8 @@ function OnlySchedLayout(props) {
     }
 
     return (
-        <div class="container">
-            <div class="row">
+        <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div class="row" style={{flexWrap:"nowrap"}}>
                 <div class="col">
                     <h1>Schedule 1</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">

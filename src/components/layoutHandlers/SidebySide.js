@@ -19,8 +19,8 @@ function SidebySide(props) {
     }
 
     return (
-        <div>
-            <div class="row">
+        <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div class="row" style={{flexWrap: "nowrap"}}>
                 <div class="col">
                     <h1>Schedule 1</h1>
                     <table class="table table-striped table-bordered table-sm">
@@ -81,7 +81,7 @@ function SidebySide(props) {
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style={{flexWrap: "nowrap"}}>
                 <div class="col">
                     <h1>Schedule 2</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">
@@ -114,7 +114,7 @@ function SidebySide(props) {
                     </table>
                 </div>
                 <div class="col">
-                <font color="red"><h1>Conflict Report 2</h1></font>
+                    <font color="red"><h1>Conflict Report 2</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
                         <thead>
                             <tr>
@@ -143,7 +143,7 @@ function SidebySide(props) {
             </div>
 
 
-            <div class="row">
+            <div class="row" style={{flexWrap: "nowrap"}}>
                 <div class="col">
                     <h1>Schedule 3</h1>
                     <table class="table table-striped table-bordered table-responsive table-sm">

@@ -22,9 +22,11 @@ function ColbyCol(props) {
         else
             return ["", ""]
     } 
+
+
     return (
-        <div>
-            <div class="row">
+        <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div class="row" style={{flexWrap:"nowrap",float: "left"}}>
                 <div class="col">
                     <h1>Schedule 1</h1>
                     <table class="table table-striped table-bordered table-sm">
@@ -121,7 +123,7 @@ function ColbyCol(props) {
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style={{flexWrap:"nowrap"}}>
                 <div class="col">
                     <font color="red"><h1>Conflict Report 1</h1></font>
                     <table class="table table-striped table-bordered table-responsive table-sm">
