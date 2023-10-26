@@ -398,15 +398,15 @@ function handleDownload(event) {
 return (
 	<div>
 		<Router>
-			<div class="w3-sidebar w3-bar-block" style={{width: "5%", position: "relative"}}>
+			<div class="w3-sidebar w3-bar-block" style={{width: "10%", position: "relative"}}>
 					<Link to="/" class="w3-bar-item w3-button w3-border-bottom">Column View</Link>
 					<Link to="/side_view" class="w3-bar-item w3-button w3-border-bottom">Side View</Link>
 					<Link to="/schedules" class="w3-bar-item w3-button w3-border-bottom">Schedules</Link>
 					<Link to="/conflicts" class="w3-bar-item w3-button w3-border-bottom ">Conflicts</Link>
 						
-					<button value={0} class="w3-bar-item btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
-					<button value={1} class="w3-bar-item btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
-					<button value={2} class="w3-bar-item btn btn-outline-dark" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>		
+					<button value={0} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
+					<button value={1} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
+					<button value={2} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>		
 			</div>
 
 			<div class="w3-container">
