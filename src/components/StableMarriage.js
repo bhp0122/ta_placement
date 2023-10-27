@@ -6,14 +6,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { saveAs } from 'file-saver';
 import './AllClassesCSV.css';
 
-// Handles the displays for each of the layout options. 
+// Handles the displays for each of the layout options
 import ColbyCol from "./layoutHandlers/ColbyCol";
 import SidebySide from "./layoutHandlers/SidebySide";
 import OnlySchedLayout from "./layoutHandlers/OnlySchedLayout";
 import OnlyConflictsLayout from "./layoutHandlers/OnlyConflictsLayout";
-// Routing in order to switch user from one page to another. 
+// Routing in order to switch user from one page to another (one layout to another). 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Button } from "bootstrap";
+
 
 
 function StableMarriage(props) {
@@ -397,8 +397,11 @@ function handleDownload(event) {
 
 return (
 	<div>
+		{/* Specifies the destination corressponding to each layout, so that the user can access the layout */}
 		<Router>
+			{/* Presented on the side within a sidebar for easy access, and to keep the necessary tools */}
 			<div class="w3-sidebar w3-bar-block" style={{width: "10%", position: "relative"}}>
+					{/* Links the user can click to the layout */}
 					<Link to="/" class="w3-bar-item w3-button w3-border-bottom">Column View</Link>
 					<Link to="/side_view" class="w3-bar-item w3-button w3-border-bottom">Side View</Link>
 					<Link to="/schedules" class="w3-bar-item w3-button w3-border-bottom">Schedules</Link>
@@ -410,15 +413,14 @@ return (
 			</div>
 
 			<div class="w3-container">
+				{/* Reference layoutHandlers folder that contains each of the layouts and their functions. */}
 				<Routes>
 					<Route path="/" element={ <ColbyCol coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
 					<Route path="/side_view" element={ <SidebySide coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
 					<Route path="/schedules" element={ <OnlySchedLayout coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
 					<Route path="/conflicts" element={ <OnlyConflictsLayout coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
-				
 				</Routes>
 			</div>
-
 		</Router>
 	</div>
 );

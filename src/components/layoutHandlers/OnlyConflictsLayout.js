@@ -2,6 +2,8 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 
 function OnlyConflictsLayout(props) {
+    
+    // Acts like the parameters of the function
     const { coursesList, conflictsOne, conflictsTwo, conflictsThree } = props
     
     // console.log(coursesList);
@@ -9,6 +11,7 @@ function OnlyConflictsLayout(props) {
     // console.log(conflictsTwo);
     // console.log(conflictsThree);
 
+    // Converts CRN to a course number
     function course_name(course){
         const current_course = coursesList.find(c => c.CRN === course);
         const course_name = 'COMP ' + current_course.course_number;

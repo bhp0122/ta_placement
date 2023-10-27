@@ -1,6 +1,8 @@
 import React from "react";
 
 function ColbyCol(props) {
+
+    // Acts like the parameters of the function
     const { coursesList, reportOne, reportTwo, reportThree } = props
 
     // console.log(coursesList);
@@ -8,13 +10,14 @@ function ColbyCol(props) {
     // console.log(reportTwo);
     // console.log(reportThree);
 
+    // Converts CRN to a course number
     function course_name(course){
         const current_course = coursesList.find(c => c.CRN === course);
         const course_name = 'COMP ' + current_course.course_number;
         return course_name;
     }
 
-
+    // Checks for a third TA.
     function checkKeys(schedule) {
         console.log(schedule)
         if (schedule.length >= 3) 

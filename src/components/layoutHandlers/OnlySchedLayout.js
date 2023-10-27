@@ -2,19 +2,23 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 
 function OnlySchedLayout(props) {
+    
+    // Acts like the parameters of the function
     const { coursesList, scheduleOne, scheduleTwo, scheduleThree } = props;
 
     // console.log(coursesList)
-    console.log(scheduleOne);
+    // console.log(scheduleOne);
     // console.log(scheduleTwo);
     // console.log(scheduleThree);
 
+    // Converts CRN to a course number
     function course_name(course){
         const current_course = coursesList.find(c => c.CRN === course);
         const course_name = 'COMP ' + current_course.course_number;
         return course_name;
     }
 
+    // Checks for a third TA. 
     function checkKeys(schedule) {
         console.log(schedule)
         if (schedule.length >= 3) 
