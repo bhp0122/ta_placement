@@ -10,11 +10,11 @@ import './AllClassesCSV.css';
 import ColbyCol from "./layoutHandlers/ColbyCol";
 import SidebySide from "./layoutHandlers/SidebySide";
 import OnlySchedLayout from "./layoutHandlers/OnlySchedLayout";
-import OnlyConflictsLayout from "./layoutHandlers/OnlyConflictsLayout";
+import { OnlyConflictsLayout } from "./layoutHandlers/OnlyConflictsLayout";
 // Routing in order to switch user from one page to another (one layout to another). 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
-
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function StableMarriage(props) {
 
@@ -395,30 +395,34 @@ function handleDownload(event) {
 	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
 }
 
+
 return (
 	<div>
 		{/* Specifies the destination corressponding to each layout, so that the user can access the layout */}
 		<Router>
 			{/* Presented on the side within a sidebar for easy access, and to keep the necessary tools */}
-			<div class="w3-sidebar w3-bar-block" style={{width: "10%", position: "relative"}}>
+			<div class="w3-sidebar w3-bar-block w3-border" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10}}>
 					{/* Links the user can click to the layout */}
 					<Link to="/" class="w3-bar-item w3-button w3-border-bottom">Column View</Link>
 					<Link to="/side_view" class="w3-bar-item w3-button w3-border-bottom">Side View</Link>
 					<Link to="/schedules" class="w3-bar-item w3-button w3-border-bottom">Schedules</Link>
 					<Link to="/conflicts" class="w3-bar-item w3-button w3-border-bottom ">Conflicts</Link>
-						
+
+					<br></br>
+
 					<button value={0} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 1</button>
 					<button value={1} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 2</button>
 					<button value={2} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>		
 			</div>
 
-			<div class="w3-container">
+			<div class="container" style={{left: 0}}>
 				{/* Reference layoutHandlers folder that contains each of the layouts and their functions. */}
 				<Routes>
+					{console.log(tas)}
 					<Route path="/" element={ <ColbyCol coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
 					<Route path="/side_view" element={ <SidebySide coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
-					<Route path="/schedules" element={ <OnlySchedLayout coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
-					<Route path="/conflicts" element={ <OnlyConflictsLayout coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
+					<Route path="/schedules" element={ <OnlySchedLayout taList={tas} coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
+					<Route path="/conflicts" element={ <OnlyConflictsLayout taList={tas} coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
 				</Routes>
 			</div>
 		</Router>
