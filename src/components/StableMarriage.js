@@ -13,8 +13,7 @@ import OnlySchedLayout from "./layoutHandlers/OnlySchedLayout";
 import { OnlyConflictsLayout } from "./layoutHandlers/OnlyConflictsLayout";
 // Routing in order to switch user from one page to another (one layout to another). 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+
 
 function StableMarriage(props) {
 

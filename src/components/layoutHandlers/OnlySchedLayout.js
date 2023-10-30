@@ -6,9 +6,9 @@ function OnlySchedLayout(props) {
     // Acts like the parameters of the function
     const { taList, coursesList, scheduleOne, scheduleTwo, scheduleThree } = props;
 
+    // Variables that keep track of the value whenever changed. Default state is at "None", or is automatically given "None"
     const [CourseValue, setCourseValue] = useState("None");
     const [TaValue, setTaValue] = useState("None");
-
 
     // Converts CRN to a course number
     function course_name(course){
@@ -25,14 +25,25 @@ function OnlySchedLayout(props) {
             return ["", ""]
     }
 
+    /* 
+    Variable is used in the dropdown. 
+    Acts as a trigger to change the value whenever an option is picked
+    from the Course dropdown menu
+    */
     const handleCourseFilter = (event) => {
         setCourseValue(event.target.value);
     }
 
+    /* 
+    Variable is used in the dropdown. 
+    Acts as a trigger to change the value whenever an option is picked
+    from the Course dropdown menu
+    */
     const handleTaFilter= (event) => {
         setTaValue(event.target.value);
     }
 
+    // Removes duplicates from the courseList, so that each option does not get presented twice
     function removeDuplicates(coursesList) {
         let arr = [];
         for (let i in coursesList) {
@@ -43,6 +54,8 @@ function OnlySchedLayout(props) {
         return arr.sort();
     }
 
+    // Filters the schedule according to the value filterCourseValue is and what value filterTaValue is. 
+    // Each schedule will have this, so that it can keep updating as changes are made. 
     function filterSchedule(schedule, filterCourseValue, filterTaValue) {
         let filteredSchedule = {}
         if (filterCourseValue != "None" && filterTaValue == "None") {
@@ -87,7 +100,9 @@ function OnlySchedLayout(props) {
 
     return (
         <div>
+            {/* Dropdown Menu for the user to filter by Courses and TAs */}
             <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"38%", padding: "5px"}}>
+                    {/* OnChange defines the function/variable/method that gets triggered whenever an option is picked by the user. */}
                     <select id="chooseCourse" onChange={handleCourseFilter}>
                         <option value="None">Course</option>
 						{removeDuplicates(coursesList).map(course =>

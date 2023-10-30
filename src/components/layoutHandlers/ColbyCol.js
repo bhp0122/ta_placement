@@ -6,6 +6,7 @@ function ColbyCol(props) {
     // Acts like the parameters of the function
     const { taList, coursesList, reportOne, reportTwo, reportThree } = props
 
+    // Variables that keep track of the value whenever changed. Default state is at "None", or is automatically given "None"
     const [CourseValue, setCourseValue] = useState("None");
     const [TaValue, setTaValue] = useState("None");
 
@@ -16,7 +17,6 @@ function ColbyCol(props) {
         return course_name;
     }
 
-
     // Checks for a third TA.
     function checkKeys(schedule) {
         console.log(schedule)
@@ -26,16 +26,27 @@ function ColbyCol(props) {
             return ["", ""]
     } 
 
+    /* 
+    Variable is used in the dropdown. 
+    Acts as a trigger to change the value whenever an option is picked
+    from the Course dropdown menu
+    */
     const handleCourseFilter = (event) => {
         setCourseValue(event.target.value);
     }
 
+    /* 
+    Variable is used in the dropdown. 
+    Acts as a trigger to change the value whenever an option is picked
+    from the Course dropdown menu
+    */
     const handleTaFilter= (event) => {
         setTaValue(event.target.value);
     }
 
+    // Removes duplicates from the courseList, so that each option does not get presented twice
     function removeDuplicates(coursesList) {
-        let arr = [];
+        let arr = []
         for (let i in coursesList) {
             if (!arr.includes(coursesList[i]["course_number"])) {
                 arr.push(coursesList[i]["course_number"]);
@@ -44,6 +55,8 @@ function ColbyCol(props) {
         return arr.sort();
     }
     
+    // Filters the schedule according to the value filterCourseValue is and what value filterTaValue is. 
+    // Each schedule will have this, so that it can keep updating as changes are made. 
     function filterSchedule(schedule, filterCourseValue, filterTaValue) {
         let filteredSchedule = {};
         if (filterCourseValue != "None" && filterTaValue == "None") {
@@ -85,6 +98,8 @@ function ColbyCol(props) {
         return filteredSchedule;    
     }
     
+    // Filters conflict report according to what filterCourseValue is and what filterTaValue is. 
+    // Each conflict report will have this, so that it can keep updating as changes are made. 
     function filterConflict(report, filterCourseValue, filterTaValue) {
         if (filterCourseValue == "None" && filterTaValue != "None") {
             let filteredConflicts = report.filter(conflict => {
@@ -129,10 +144,11 @@ function ColbyCol(props) {
         }  
     }
 
-
     return (
         <div>
+            {/* Dropdown Menu for the user to filter by Courses and TAs */}
             <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"38%", padding: "5px"}}>
+                    {/* OnChange defines the function/variable/method that gets triggered whenever an option is picked by the user. */}
                     <select id="chooseCourse" onChange={handleCourseFilter}>
                         <option value="None">Course</option>
 						{removeDuplicates(coursesList).map(course =>
