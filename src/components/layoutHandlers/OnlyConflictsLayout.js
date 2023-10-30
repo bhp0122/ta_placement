@@ -22,7 +22,7 @@ function OnlyConflictsLayout(props) {
         setCourseValue(event.target.value);
     }
 
-    const handleTaFilter= (event) => {
+    const handleTaFilter = (event) => {
         setTaValue(event.target.value);
     }
 
@@ -37,7 +37,7 @@ function OnlyConflictsLayout(props) {
         return arr.sort();
     }
 
-    function filterArray(report, filterCourseValue, filterTaValue) {
+    function filterConflict(report, filterCourseValue, filterTaValue) {
         if (filterCourseValue == "None" && filterTaValue != "None") {
             let filteredConflicts = report.filter(conflict => {
                 if (conflict[1] == filterTaValue) {
@@ -83,7 +83,7 @@ function OnlyConflictsLayout(props) {
 
     return (
         <div>
-            <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"30%", padding: "5px"}}>
+            <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"38%", padding: "5px"}}>
                     <select id="chooseCourse" onChange={handleCourseFilter}>
                         <option value="None">Course</option>
 						{removeDuplicates(coursesList).map(course =>
@@ -116,7 +116,7 @@ function OnlyConflictsLayout(props) {
                                 </tr>
                             </thead>
                             <tbody>  
-                                {(filterArray(conflictsOne, CourseValue, TaValue)).map(conflict =>
+                                {(filterConflict(conflictsOne, CourseValue, TaValue)).map(conflict =>
                                     <tr>
                                         <td>COMP {course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td>
@@ -144,7 +144,7 @@ function OnlyConflictsLayout(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filterArray(conflictsTwo, CourseValue, TaValue).map(conflict => 
+                                {filterConflict(conflictsTwo, CourseValue, TaValue).map(conflict => 
                                     <tr> 
                                         <td>{course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
@@ -172,7 +172,7 @@ function OnlyConflictsLayout(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filterArray(conflictsThree, CourseValue, TaValue).map(conflict => 
+                                {filterConflict(conflictsThree, CourseValue, TaValue).map(conflict => 
                                     <tr> 
                                         <td>{course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}

@@ -43,7 +43,7 @@ function OnlySchedLayout(props) {
         return arr.sort();
     }
 
-    function filterArray(schedule, filterCourseValue, filterTaValue) {
+    function filterSchedule(schedule, filterCourseValue, filterTaValue) {
         let filteredSchedule = {}
         if (filterCourseValue != "None" && filterTaValue == "None") {
             Object.keys(schedule).filter(courseKey => {
@@ -87,7 +87,7 @@ function OnlySchedLayout(props) {
 
     return (
         <div>
-            <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"30%", padding: "5px"}}>
+            <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"38%", padding: "5px"}}>
                     <select id="chooseCourse" onChange={handleCourseFilter}>
                         <option value="None">Course</option>
 						{removeDuplicates(coursesList).map(course =>
@@ -122,7 +122,7 @@ function OnlySchedLayout(props) {
                             </thead>
 
                             <tbody>
-                                {Object.keys(filterArray(scheduleOne, CourseValue, TaValue)).map((course, index) =>
+                                {Object.keys(filterSchedule(scheduleOne, CourseValue, TaValue)).map((course, index) =>
                                     <tr key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
@@ -154,7 +154,7 @@ function OnlySchedLayout(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(filterArray(scheduleTwo, CourseValue, TaValue)).map((course, index) =>
+                                {Object.keys(filterSchedule(scheduleTwo, CourseValue, TaValue)).map((course, index) =>
                             
                                     <tr key={index}>
                                         <td>COMP {course_name(course)}</td>
@@ -187,7 +187,7 @@ function OnlySchedLayout(props) {
                             </thead>
 
                             <tbody>
-                                {Object.keys(filterArray(scheduleThree, CourseValue, TaValue)).map((course, index) =>
+                                {Object.keys(filterSchedule(scheduleThree, CourseValue, TaValue)).map((course, index) =>
                                     <tr key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>

@@ -419,8 +419,8 @@ return (
 				{/* Reference layoutHandlers folder that contains each of the layouts and their functions. */}
 				<Routes>
 					{console.log(tas)}
-					<Route path="/" element={ <ColbyCol coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
-					<Route path="/side_view" element={ <SidebySide coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
+					<Route path="/" element={ <ColbyCol taList={tas} coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
+					<Route path="/side_view" element={ <SidebySide taList={tas} coursesList={courses} reportOne={history[0]} reportTwo={history[1]} reportThree={history[2]}/> }></Route>
 					<Route path="/schedules" element={ <OnlySchedLayout taList={tas} coursesList={courses} scheduleOne={history[0][0]} scheduleTwo={history[1][0]} scheduleThree={history[2][0]} /> }></Route>
 					<Route path="/conflicts" element={ <OnlyConflictsLayout taList={tas} coursesList={courses} conflictsOne={history[0][1]} conflictsTwo={history[1][1]} conflictsThree={history[2][1]} /> }></Route>
 				</Routes>
