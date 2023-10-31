@@ -339,8 +339,7 @@ run_all()
 
 function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
     const rows = [];
-	const courseData = [];
-	let headers = "Course,Remaining Hours,TA 1,TA 1 Hours,TA 2,TA 2 Hours,TA 3, TA 3 Hours,,Eligible TAs,,, ,Conflict's Course Name, Conflict's CRN, UID, Last Name, First Name, Conflict Reason";
+	let headers = "Course,Remaining Hours,TA 1,TA 1 Hours,TA 2,TA 2 Hours,TA 3, TA 3 Hours,,Eligible TAs";
 
 
 	
@@ -380,20 +379,20 @@ function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
 		}
     });
 
-	
+	rows.push([]);
+	rows.push(["Conflict's Course Name", "Conflict's CRN", "UID", "Last Name", "First Name", "Conflict Reason"]);
 	conflictReport.forEach((conflict) =>{
-		courseData.push([course_name(conflict[0]), conflict[0], conflict[1], conflict[2], conflict[3], conflict[4]]);
+		rows.push([course_name(conflict[0]), conflict[0], conflict[1], conflict[2], conflict[3], conflict[4]]);
 	});
 
 
-	const combinedData = rows.concat([[]],courseData);
 	
 	
 	
 
 	//const csv = headers + '\n' + Object.entries(obj).map(([key, value]) => Object.values(value).join(',')).join('\n');
 	
-	const csv = headers + '\n' + combinedData.map((row) => row.join(',')).join('\n');
+	const csv = headers + '\n' + rows.map((row) => row.join(',')).join('\n');
 	return csv;
   }
 
