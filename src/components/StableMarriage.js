@@ -341,7 +341,7 @@ function course_name(course){
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
 run_all()
 
-function convertToCSV(schedule, remaining_hours_men) {
+function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
     const rows = [];
 	let headers = "Course,Remaining Hours,TA 1,TA 1 Hours,TA 2,TA 2 Hours,TA 3, TA 3 Hours,,Eligible TAs";
 
@@ -377,6 +377,12 @@ function convertToCSV(schedule, remaining_hours_men) {
 			);
 		}
     });
+
+	rows.push([]);
+	rows.push(["Conflict's Course Name", "Conflict's CRN", "UID", "Last Name", "First Name", "Conflict Reason"]);
+	conflictReport.forEach((conflict) =>{
+		rows.push([course_name(conflict[0]), conflict[0], conflict[1], conflict[2], conflict[3], conflict[4]]);
+	});
 	
 
 	//const csv = headers + '\n' + Object.entries(obj).map(([key, value]) => Object.values(value).join(',')).join('\n');
@@ -390,7 +396,7 @@ function downloadCSV(csvData, fileName) {
   }
   
 function handleDownload(event) {
-	const csv = convertToCSV(history[event.target.value][0], history[event.target.value][3]);
+	const csv = convertToCSV(history[event.target.value][0], history[event.target.value][3], history[event.target.value][1]);
 	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
 }
 
