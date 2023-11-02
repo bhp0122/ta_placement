@@ -11,7 +11,12 @@ function Predeterminations(props){
 	const [count, setCount] = useState(1)
 	const predeterminations = []
 
-
+	function course_name(course){
+		const current_course = courses.find(c => c.CRN === course);
+		const course_name = 'COMP ' + current_course.course_number;
+		return course_name;
+	}
+	
 	function handleTA(event) {
 		const id = Number(event.target.id.replace(/\D/g, ''))
 		const parent = event.target.parentElement
@@ -48,7 +53,7 @@ function Predeterminations(props){
 		return	<div id={'predeter'+id} style={{display:'flex', justifyContent: 'space-evenly', margin:'5px'}}>
 			<select id={'course'+id} className='form-select' style={{width:'20%', float:'left'}} onChange={handleTA}>
 				<option value={0}>--- Course by CRN ---</option>
-				{course_array.map(course => <option value={course}>{course}</option>)}
+				{course_array.map(course => <option value={course}>{course_name(course)} {course}</option>)}
 			</select>
 			
 			<select id={'ta'+id} className='form-select' onChange={handleTA} style={{width:'20%', float:'left'}}>
