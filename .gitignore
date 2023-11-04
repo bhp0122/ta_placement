@@ -4,3 +4,4 @@
 # Read README.md's "Ease of Development" section for more details
 latest_commit.txt
 .vscode
+node_modules/
