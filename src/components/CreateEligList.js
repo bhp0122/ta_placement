@@ -7,7 +7,7 @@ function CreateEligList(props){
 
     const [all_eligible_classes, setAllEligibleClasses] = useState([]);
 
-    const { setRunAlg, all_classes_attend, all_TAs, classList, setClassList }  = props;
+    const { setRunAlg, all_classes_attend, all_TAs, classList, setClassList, tas }  = props;
 
     const year = "2023"; // need to make this user input at some point
 
@@ -100,23 +100,6 @@ function CreateEligList(props){
             
         }
     
-    // Converts the inserted time from hour-minute format to just minutes
-    // The parameter is an int, and the function returns an int
-    function convertToFlatTime(hour_minute) {
-        let minutes = hour_minute % 100;
-        
-        // This should never trigger, but is included for safety reasons
-        // If there is no hour portion, return the minutes
-        if (hour_minute == minutes) {
-            return minutes;
-        }
-        
-        // We multiply the hour portion by 0.6 to get its minutes equivalent
-        let hours = (hour_minute - minutes) * 0.6;
-        
-        return hours + minutes;
-    }
-    
     // Pushes the TA's eligibilty status to the class list (including a reason if they are not eligible)
     function pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, is_able, reasons) {
         let rowData = {
@@ -203,7 +186,13 @@ function CreateEligList(props){
 
     function handleEligibilityList(){
       const class_list = [];
-
+        
+    // Contains the hours that a TA has set aside for assisting in a class
+    let ta_hours = [];
+    let count = 2;
+    for (const ta_hour in tas) {
+        ta_hours.push({...tas[ta_hour]});
+    }
 
     for (let i = 0; i < all_classes_attend.length; i++){
 
@@ -242,7 +231,7 @@ function CreateEligList(props){
             // Pre-sets the TA's credit hours since the value doesn't exist yet
             curTA['credit_hours'] = 0;
 
-            let timeEligible = true;
+            let scheduleEligible = true;
             let courseEligible = false;
             
             // The TA is eligible for this course if their grade for this course is -A or higher, or they took a qualifying course with a grade of -A or higher
@@ -325,20 +314,9 @@ function CreateEligList(props){
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, unmatchedClassesReason);
             }
             
-            // The next block checks if the TA can assist in the current class that is being checked
-            // Specifically, it sees if the classes that the TA is currently taking overlaps with the class being checked
-            // This variable is not for this algorithm
-            // This variable stores all of the blocks of time that the TA has free 
-            // It's bounded from 8 AM to 7 PM, and the TA will have 15 minutes of wiggle room for moving from class to class 
-            // Basically, if the TA has to assist after one of their classes, they will have 15 minutes before the assisting start time, and 15 minutes after the assisting end time
-            // Practically, the next block's variable "class_TA_taking_start_time" will be 15 minutes behind this variable's "start_free_time"
-            //          and the next block's variable "class_TA_taking_end_time" will be 15 minutes ahead this variable's "end_free_time"
-            // This variable's values are determined in the block, but will not be used there
-            let free_time = []
-            let start_of_day = convertToFlatTime(800);
-            let end_of_day = convertToFlatTime(1900);
-
-            if (courseEligible === true){ // if TA has taken the class or taken an eligible class
+            if (courseEligible === true){
+                // The next block checks if the TA has the schedule to assist in the current class that is being checked
+                // Specifically, it sees if the classes that the TA is currently taking overlaps with the class being checked
                 for (let x = 0; x < curTACourses.length; x++){ // iterate through each class the TA has taken
                     const takingCourse = curTACourses[x];
 
@@ -356,39 +334,71 @@ function CreateEligList(props){
 
                                     const class_TA_taking_end_time = parseInt(takingCourse.stopTime); //stop time of class that TA is taking current semester
                                     
-                                    // Builds the free_time variable
-                                    free_time.push({
-                                        start_free_time: convertToFlatTime(curStartTime) + 15,
-                                        end_free_time: convertToFlatTime(curEndTime) - 15
-                                    });
-                                    
                                     // check if current class and class that the TA is taking is overlapping in time at all
                                     if ((curStartTime - class_TA_taking_start_time >= 0 && curStartTime - class_TA_taking_end_time <= 0) || (curEndTime - class_TA_taking_start_time >= 0 && curEndTime - class_TA_taking_end_time <= 0)){
-                                        timeEligible = false;
+                                        scheduleEligible = false;
                                     }
                                     else if ((class_TA_taking_start_time - curStartTime >= 0 && class_TA_taking_start_time - curEndTime <= 0) || (class_TA_taking_end_time - curStartTime >= 0 && class_TA_taking_end_time - curEndTime <= 0)){
-                                        timeEligible = false;
+                                        scheduleEligible = false;
                                     }
                                 }
                             }
                         } 
-                        else { // if TA does not need to be in class, they are timeEligible
-                            timeEligible = true;
+                        else { // if TA does not need to be in class, they are scheduleEligible
+                            scheduleEligible = true;
                         }
 
                     }
                 }
+                
+                // This section checks if the TA has the time to assist in this course
+                // Specifically, it takes the course's TA hours and subtracts is from the TA's TA hours
+                // If the result is negative, the TA is not time eligible
+                // Otherwise, the difference is saved, and the TA is time eligible
+                const getCourseTAHours = function (enrollment) {
+                    if (enrollment < 10) {
+                        // This case isn't valid, but since the first case is bounded to 10-25 enrolled students,
+                        // this should not be ignored
+                        return 5;
+                    }
+                    if (enrollment < 26) { // 10-25
+                        return 10;
+                    }
+                    if (enrollment < 40) {// 26-39
+                        return 15;
+                    }
+                    if (enrollment < 60) {// 40-59
+                        return 20;
+                    }
+                    
+                    // The ">60" check isn't necessary to define explicitly since the function 
+                    // returns if enrolled is less than 60, so we can return 25 directly
+                    return 25;
+                };
+                
+                let courseTAHours = getCourseTAHours(enrollment);
+                let ta_hour = ta_hours.find(item => item['uuid'] === curTAID);
+                let difference = ta_hour.totalTAHours - courseTAHours;
+                
+                if (difference < 0) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to assist for this course");
+                    continue;
+                }
+                
+                // If we get here, then the TA is time eligible, so the difference is saved
+                ta_hour.totalTAHours = difference;
+                
             }
 
-            if (timeEligible === false) {
-                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
+            if (scheduleEligible === false) {
+                pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the schedule required to assist for this course");
                 continue;
             }
             
-            // At this point, the TA is time eligible, and has taken the class or taken an eligible class with a high enough grade
+            // At this point, the TA is schedule eligible, and has taken the class or taken an eligible class with a high enough grade
 
-            // Since "timeEligible" defaults to true, if "courseEligible" is false, the above if statement will be skipped
-            // "timeEligible" should not default to false (the if statement below should not be removed) since a failed eligiblity check will improperly enter the above if statement
+            // Since "scheduleEligible" defaults to true, if "courseEligible" is false, the above if statement will be skipped
+            // "scheduleEligible" should not default to false (the if statement below should not be removed) since a failed schedule eligiblity check will improperly enter the above if statement
             // Instead, an error ineligibly reason is given at the end of the loop
             if (courseEligible === true){ 
                 pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "not applicable; TA is eligible");

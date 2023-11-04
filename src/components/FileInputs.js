@@ -91,7 +91,7 @@ function FileInputs(props) {
           </div>
         }
         {fileUploaded3 && <AllTAsCSV setAllTas={setAllTas} tas={tas} fileUploaded4={fileUploaded4} setFileUploaded4={setFileUploaded4} />}
-        {fileUploaded4 && <CreateEligList setRunAlg={setRunAlg} all_TAs={all_TAs} all_classes_attend={all_classes_attend} classList={classList} setClassList={setClassList} />}
+        {fileUploaded4 && <CreateEligList setRunAlg={setRunAlg} all_TAs={all_TAs} all_classes_attend={all_classes_attend} classList={classList} setClassList={setClassList} tas={tas}/>}
       </div>
 
   );
