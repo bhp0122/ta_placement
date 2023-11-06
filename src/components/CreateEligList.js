@@ -238,6 +238,7 @@ function CreateEligList(props){
                 // if TA is currently taking the course, they aren't eligible
                 if (takenCourse.semester === semester && takenCourse.year === year){
                     // This is not currently planned to have a conflict reasoning
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Currently taking course.");
                     continue;
                 }
 
