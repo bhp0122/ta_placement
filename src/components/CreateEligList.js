@@ -241,7 +241,8 @@ function CreateEligList(props){
 
                 // if TA is currently taking the course, they aren't eligible
                 if (takenCourse.semester === semester && takenCourse.year === year){
-                    if (takenCourseNumber == curCrse || qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))) {
+                    // If the course that is being check that is currently being taken is the current course being checked for an eligible TA or if it is a qualifying course
+                    if (takenCourseNumber == curCrse || qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber)) && curCrse != 1900) {
                         isTakingCourse = true;
                         pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, 'Currently taking course');
                     }
@@ -274,7 +275,7 @@ function CreateEligList(props){
                     }
                 }
             }
-
+            // If the TA has not taken any course or the course associated
             if (hastakenQualifiedCourse == false && hastakenCourse == false && isTakingCourse == false) {
                 if (typeof qualifiedCourses == "undefined") {
                     pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
