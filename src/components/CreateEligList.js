@@ -216,8 +216,12 @@ function CreateEligList(props){
             const curTACourses = all_TAs[j].courses; // list of every class that the current TA being evaluated has taken
             
             // Determines if the TA was already scheduled to TA
-            let timeEligible = true;
+            let isTakingCourse = false;
+            let hastakenCourse = false;
+            let hastakenQualifiedCourse = false;
+            let gradeEligible = false;
             let courseEligible = false;
+            let timeEligible = true;
             
             // So, we loop over all of the courses that the TA has been to (no matter if they have taken it or are taking it)
             for (let k = 0; k < curTACourses.length; k++){
@@ -228,6 +232,7 @@ function CreateEligList(props){
                 let takenCourseEnrollment = null;
 
                 for (const classIndex in all_classes_attend) {
+                    // Retrieves the course hours and enrollment number for the course that is being evaluated that a TA has taken. 
                     if (all_classes_attend[classIndex].CRN == takenCourseCRN) {
                         takenCourseTaHours = all_classes_attend[classIndex].totalTAHours;
                         takenCourseEnrollment = all_classes_attend[classIndex].totalEnrolled;
@@ -236,13 +241,21 @@ function CreateEligList(props){
 
                 // if TA is currently taking the course, they aren't eligible
                 if (takenCourse.semester === semester && takenCourse.year === year){
-                    if (all_classes_attend.map(classIndex => {return classIndex.CRN}).includes(takenCourseCRN)) {
+                    if (takenCourseNumber == curCrse || qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))) {
+                        isTakingCourse = true;
+                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, 'Currently taking course');
+                    }
+                    // If the course is one of the ones in the list that needs a TA, then the reason is pushed into that course. 
+                    else if (all_classes_attend.map(classIndex => {return classIndex.CRN}).includes(takenCourseCRN)) {
                         pushClassList(class_list, curTAID, takenCourseCRN, takenCourseNumber, takenCourseTaHours, takenCourseEnrollment, false, 'Currently taking course');
                     }
+                    
                 }
                 // TA has taken this course in a previous semester, not current one 
                 else if (takenCourseNumber === curCrse){
+                    hastakenCourse = true;
                     if (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+') {
+                        gradeEligible = true;
                         courseEligible = true;
                     }
                     else {
@@ -251,16 +264,29 @@ function CreateEligList(props){
                 }
                 // If the TA has taken a qualifying course in a previous semester
                 else if (qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber))) {
+                    hastakenQualifiedCourse = true
                     if (takenCourse.grade === 'A-' || takenCourse.grade === 'A' || takenCourse.grade === 'A+') {
+                        gradeEligible = true;
                         courseEligible = true;
                     }
-                    else {
+                    else { 
                         pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in qualifying course (COMP ${takenCourseNumber})`);
                     }
                 }
             }
 
-            if (courseEligible === true){ // if TA has taken the class or taken an eligible class
+            if (hastakenQualifiedCourse == false && hastakenCourse == false && isTakingCourse == false) {
+                if (typeof qualifiedCourses == "undefined") {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
+                }
+                else if (qualifiedCourses.length == 2) {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${qualifiedCourses[0]} or ${qualifiedCourses[1]} not taken`);
+                }
+                else {
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${qualifiedCourses.slice(0, -1).join(', ')}, or ${qualifiedCourses[qualifiedCourses.length - 1]} not taken`);
+                }    
+            }
+            else if (courseEligible === true){ // if TA has taken the class or taken an eligible class
                 for (let x = 0; x < curTACourses.length; x++){ // iterate through each class the TA has taken
                     const takingCourse = curTACourses[x];
 
@@ -289,27 +315,13 @@ function CreateEligList(props){
                         } 
                     }
                 }
-            }
-
-            if (courseEligible) {
                 if (timeEligible) {
                     pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "Eligible");
                 }
                 else {
                     pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
                 }
-            }
-            else {
-                if (typeof qualifiedCourses == "undefined") {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
-                }
-                else if (qualifiedCourses.length == 2) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${qualifiedCourses[0]} or ${qualifiedCourses[1]} not taken`);
-                }
-                else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${qualifiedCourses.slice(0, -1).join(', ')}, or ${qualifiedCourses[qualifiedCourses.length - 1]} not taken`);
-                }
-            }
+            }    
         }
 
         let anyOptions = class_list.find((t) => {
