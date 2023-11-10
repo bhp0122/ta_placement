@@ -188,8 +188,8 @@ function SidebySide(props) {
                                         <td>{reportOne[0][course][0][1]}</td>
                                         <td>{reportOne[0][course][1][0]}</td>
                                         <td>{reportOne[0][course][1][1]}</td>
-                                        <td>{checkKeys(reportOne[0])[0]}</td>
-                                        <td>{checkKeys(reportOne[0])[1]}</td>
+                                        <td>{checkKeys(reportOne[0][course])[0]}</td>
+                                        <td>{checkKeys(reportOne[0][course])[1]}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -249,8 +249,8 @@ function SidebySide(props) {
                                         <td>{reportTwo[0][course][0][1]}</td>
                                         <td>{reportTwo[0][course][1][0]}</td>
                                         <td>{reportTwo[0][course][1][1]}</td>
-                                        <td>{checkKeys(reportTwo[0])[0]}</td>
-                                        <td>{checkKeys(reportTwo[0])[1]}</td>
+                                        <td>{checkKeys(reportTwo[0][course])[0]}</td>
+                                        <td>{checkKeys(reportTwo[0][course])[1]}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -311,8 +311,8 @@ function SidebySide(props) {
                                         <td>{reportThree[0][course][0][1]}</td>
                                         <td>{reportThree[0][course][1][0]}</td>
                                         <td>{reportThree[0][course][1][1]}</td>
-                                        <td>{checkKeys(reportThree[0])[0]}</td>
-                                        <td>{checkKeys(reportThree[0])[0]}</td>
+                                        <td>{checkKeys(reportThree[0][course])[0]}</td>
+                                        <td>{checkKeys(reportThree[0][course])[0]}</td>
                                     </tr>
                                 ))}
                             </tbody>

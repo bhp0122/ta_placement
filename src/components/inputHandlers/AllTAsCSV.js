@@ -48,7 +48,6 @@ function AllTAsCSV(props) {
           }
 
 
-
         const uuidIndex = headers.indexOf("uuid");
         const lastNameIndex = headers.indexOf("Last_Name");
         const firstNameIndex = headers.indexOf("First_Name");
@@ -60,6 +59,7 @@ function AllTAsCSV(props) {
         const stopTimeIndex = headers.indexOf("Stop_Time");
         const semester = headers.indexOf("Semester");
         const year = headers.indexOf("Year");
+        const crnIndex = headers.indexOf("CRN\r");
         const extractedTAs = [];
     
         // Loop through each row and extract the desired columns
@@ -77,6 +77,7 @@ function AllTAsCSV(props) {
             stopTime: row[stopTimeIndex],
             semester: row[semester],
             year: row[year],
+            CRN: row[crnIndex],
           };
           let existingRow = extractedTAs.find((r) => {
             return (
@@ -98,6 +99,7 @@ function AllTAsCSV(props) {
               stopTime: rowData.stopTime,
               semester: rowData.semester,
               year: rowData.year,
+              CRN: rowData.CRN.replace(/[\r]/gm, ''),
             });
           } else {
             const taInTAList = tas.some(item => item['uuid'] === rowData.uuid)
@@ -119,6 +121,7 @@ function AllTAsCSV(props) {
                     stopTime: rowData.stopTime,
                     semester: rowData.semester,
                     year: rowData.year,
+                    CRN: rowData.CRN.replace(/[\r]/gm, ''),
                   },
                 ],
               };
