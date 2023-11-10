@@ -399,6 +399,7 @@ function handleDownload(event) {
 	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
 }
 
+console.log(free_men);
 
 return (
 	<div>

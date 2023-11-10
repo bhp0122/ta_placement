@@ -324,32 +324,9 @@ function CreateEligList(props){
                 }
             }    
         }
-
-        let anyOptions = class_list.find((t) => {
-            return(
-                t.CRN == curCRN
-            )
-        });
-        if (!anyOptions) { // if no row has been made, this means no TA is eligible, therefore, create row with this information
-            const emptyData = {
-                CRN: curCRN,
-                course_number: curCrse,
-                taHours: taHours,
-                totalEnrolled: enrollment,
-                teacher_assistants: [
-                    {
-                    able_TA: "No eligible Teacher Assistants",
-                    },
-                ],
-            };
-            class_list.push(emptyData);
-        }
-
     }
-
     console.log(class_list);
     setClassList(class_list);
-
 }
 
 useEffect(() => {
