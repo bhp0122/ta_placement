@@ -76,7 +76,33 @@ function AllClassesCSV(props) {
       }
     }
     setAllClasses(extractedClasses)
+    assignedHours(extractedClasses)
+    console.log(extractedClasses)
     setFileUploaded(true)
+    }
+
+    function assignedHours(extractedClasses) {
+      // Goes through all the courses and assinged the amount of TA hours the course can receive based on enrollment. 
+      extractedClasses.map(comp => {
+        // Due to the complexity of assigning a TA to a 1900 Lab, the TA hours assigned are not changed unless it is change in the csv file. 
+        if (comp["crse"] != '1900') {
+          if (comp["totalEnrolled"] < 10) {
+            comp["totalTAHours"] = '5';
+          }
+          else if (comp["totalEnrolled"] < 26) { // i.e If a course gets 10-25 number of people enrolled, then max hours a course can have a TA assigned is 10 hours. 
+            comp["totalTAHours"] = '10';
+          }
+          else if (comp["totalEnrolled"] < 40) {
+            comp["totalTAHours"] = '15';
+          }
+          else if (comp["totalEnrolled"] < 60) {
+            comp["totalTAHours"] = '20';
+          }
+          else {
+            comp["totalTAHours"] = '25';
+          }
+        }
+      })
     }
 
     function handleHelpIconClick() {
