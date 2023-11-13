@@ -28,6 +28,7 @@ function AllClassesCSV(props) {
       "Total Enrolled",
       "CRN",
       "Crse",
+      "Sec",
       "Title",
       "Days",
       "Time",
@@ -51,6 +52,7 @@ function AllClassesCSV(props) {
     const totalEnrolledIndex = headers.indexOf("Total Enrolled");
     const CRN = headers.indexOf("CRN");
     const crseIndex = headers.indexOf("Crse");
+    const secIndex = headers.indexOf("Sec");
     const titleIndex = headers.indexOf("Title");
     const daysIndex = headers.indexOf("Days");
     const timeIndex = headers.indexOf("Time");
@@ -66,6 +68,7 @@ function AllClassesCSV(props) {
           totalEnrolled: row[totalEnrolledIndex],
           CRN: row[CRN],
           crse: row[crseIndex],
+          sec: row[secIndex],
           title: row[titleIndex],
           days: row[daysIndex],
           time: row[timeIndex],
