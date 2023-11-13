@@ -75,8 +75,8 @@ function AllClassesCSV(props) {
         extractedClasses.push(rowData);
       }
     }
-    setAllClasses(extractedClasses)
     assignedHours(extractedClasses)
+    setAllClasses(extractedClasses)
     console.log(extractedClasses)
     setFileUploaded(true)
     }
