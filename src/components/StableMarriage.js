@@ -314,9 +314,8 @@ function validate_schedule(schedule, courses){
 			if (schedule[course][i][0] === '')
 				continue;
 			const current_course = courses.find(c => c.CRN === course)
-
 			let course_ta = current_course.teacher_assistants.find(item => item.TAID === schedule[course][i][0]);
-			if (!course_ta.able) {	
+			if (course_ta.able == false) {	
 				let curTA_uuid = schedule[course][i][0];
 				let curTA = tas.find(t => t.uuid === curTA_uuid);
 				let reasons = course_ta.reason;
@@ -400,6 +399,7 @@ function handleDownload(event) {
 	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
 }
 
+console.log(free_men);
 
 return (
 	<div>
