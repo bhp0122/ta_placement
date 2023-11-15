@@ -127,6 +127,7 @@ function OnlySchedLayout(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
@@ -141,6 +142,7 @@ function OnlySchedLayout(props) {
                                     <tr key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
+                                        <td></td>
                                         <td>{scheduleOne[course][0][0]}</td>
                                         <td>{scheduleOne[course][0][1]}</td>
                                         <td>{scheduleOne[course][1][0]}</td>
@@ -160,6 +162,7 @@ function OnlySchedLayout(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
@@ -174,6 +177,7 @@ function OnlySchedLayout(props) {
                                     <tr key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
+                                        <td></td>
                                         <td>{scheduleTwo[course][0][0]}</td>
                                         <td>{scheduleTwo[course][0][1]}</td>
                                         <td>{scheduleTwo[course][1][0]}</td>
@@ -192,6 +196,7 @@ function OnlySchedLayout(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
@@ -206,6 +211,7 @@ function OnlySchedLayout(props) {
                                     <tr key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
+                                        <td></td>
                                         <td>{scheduleThree[course][0][0]}</td>
                                         <td>{scheduleThree[course][0][1]}</td>
                                         <td>{scheduleThree[course][1][0]}</td>
