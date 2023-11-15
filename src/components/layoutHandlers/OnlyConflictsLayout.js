@@ -126,6 +126,7 @@ function OnlyConflictsLayout(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -137,6 +138,7 @@ function OnlyConflictsLayout(props) {
                                     <tr>
                                         <td>COMP {course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td>
+                                        <td></td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -154,6 +156,7 @@ function OnlyConflictsLayout(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -165,6 +168,7 @@ function OnlyConflictsLayout(props) {
                                     <tr> 
                                         <td>{course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
+                                        <td></td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -182,6 +186,7 @@ function OnlyConflictsLayout(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -193,6 +198,7 @@ function OnlyConflictsLayout(props) {
                                     <tr> 
                                         <td>{course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
+                                        <td></td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>

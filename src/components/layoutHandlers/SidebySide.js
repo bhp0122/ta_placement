@@ -171,6 +171,7 @@ function SidebySide(props) {
                                     <tr>
                                         <th>Course</th>
                                         <th>CRN</th>
+                                        <th>Section</th>
                                         <th>TA 1</th>
                                         <th>TA 1 hours</th>
                                         <th>TA 2</th>
@@ -184,6 +185,7 @@ function SidebySide(props) {
                                     <tr  key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
+                                        <td></td>
                                         <td>{reportOne[0][course][0][0]}</td>
                                         <td>{reportOne[0][course][0][1]}</td>
                                         <td>{reportOne[0][course][1][0]}</td>
@@ -202,6 +204,7 @@ function SidebySide(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -213,6 +216,7 @@ function SidebySide(props) {
                                     <tr> 
                                         <td>COMP {course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td>
+                                        <td></td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -232,6 +236,7 @@ function SidebySide(props) {
                                     <tr>
                                         <th>Course</th>
                                         <th>CRN</th>
+                                        <th>Section</th>
                                         <th>TA 1</th>
                                         <th>TA 1 hours</th>
                                         <th>TA 2</th>
@@ -245,6 +250,7 @@ function SidebySide(props) {
                                     <tr  key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
+                                        <td></td>
                                         <td>{reportTwo[0][course][0][0]}</td>
                                         <td>{reportTwo[0][course][0][1]}</td>
                                         <td>{reportTwo[0][course][1][0]}</td>
@@ -263,6 +269,7 @@ function SidebySide(props) {
                                 <tr>
                                     <th>Course</th>
                                     <th>CRN</th>
+                                    <th>Section</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -274,6 +281,7 @@ function SidebySide(props) {
                                     <tr> 
                                         <td>COMP {course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td>
+                                        <td></td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -294,6 +302,7 @@ function SidebySide(props) {
                                     <tr>
                                         <th>Course</th>
                                         <th>CRN</th>
+                                        <th>Section</th>
                                         <th>TA 1</th>
                                         <th>TA 1 hours</th>
                                         <th>TA 2</th>
@@ -307,6 +316,7 @@ function SidebySide(props) {
                                     <tr  key={index}>
                                         <td>COMP {course_name(course)}</td>
                                         <td>{course}</td>
+                                        <td></td>
                                         <td>{reportThree[0][course][0][0]}</td>
                                         <td>{reportThree[0][course][0][1]}</td>
                                         <td>{reportThree[0][course][1][0]}</td>
@@ -324,6 +334,7 @@ function SidebySide(props) {
                             <thead>
                                 <th>Course</th>
                                 <th>CRN</th>
+                                <th>Section</th>
                                 <th>UID</th>
                                 <th>Last</th>
                                 <th>First</th>
@@ -334,6 +345,7 @@ function SidebySide(props) {
                                     <tr> 
                                         <td>COMP {course_name(conflict[0])}</td>
                                         <td>{conflict[0]}</td>
+                                        <td></td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>

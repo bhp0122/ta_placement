@@ -337,20 +337,29 @@ function course_name(course){
 	return course_name;
 }
 
+//Adding section
+function course_section(course){
+	const current_course = courses.find(c => c.CRN === course);
+	const section = current_course.Section;
+	return section;
+}
+
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
 run_all()
 
 function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
     const rows = [];
-	let headers = "Course,Remaining Hours,TA 1,TA 1 Hours,TA 2,TA 2 Hours,TA 3, TA 3 Hours,,Eligible TAs";
+	let headers = "Course Name ,Course CRN,Course Section,Remaining Hours,TA 1,TA 1 Hours,TA 2,TA 2 Hours,TA 3, TA 3 Hours,,Eligible TAs";
 
 	
 	console.log(schedule);
 	console.log(courses[0].teacher_assistants)
     Object.keys(schedule).forEach((course) => {
 		if ( schedule[course].length >= 3 ){
-			rows.push([        
-				course,        
+			rows.push([  
+				course_name(course),      
+				course,   
+				course_section(course),     
 				remaining_hours_men[course],
 				schedule[course][0][0],
 				schedule[course][0][1],
@@ -362,8 +371,10 @@ function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
 			].concat(courses.find(c => c.CRN === course).teacher_assistants.map(t => t.able_map).sort())
 			);
 		}else{
-			rows.push([        
+			rows.push([ 
+				course_name(course),       
 				course,        
+				course_section(course),
 				remaining_hours_men[course],
 				schedule[course][0][0],
 				schedule[course][0][1],
@@ -378,9 +389,9 @@ function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
     });
 
 	rows.push([]);
-	rows.push(["Conflict's Course Name", "Conflict's CRN", "UID", "Last Name", "First Name", "Conflict Reason"]);
+	rows.push(["Conflict's Course Name", "Conflict's CRN","Conflict's Section", "UID", "Last Name", "First Name", "Conflict Reason"]);
 	conflictReport.forEach((conflict) =>{
-		rows.push([course_name(conflict[0]), conflict[0], conflict[1], conflict[2], conflict[3], conflict[4]]);
+		rows.push([course_name(conflict[0]), conflict[0], course_section(conflict[0]), conflict[1], conflict[2], conflict[3], conflict[4]]);
 	});
 	
 
