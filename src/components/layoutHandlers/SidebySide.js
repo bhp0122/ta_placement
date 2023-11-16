@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 function SidebySide(props) {
     
     // Acts like the parameters of the function
-    const { taList, coursesList, reportOne, reportTwo, reportThree } = props
+    const { taList, coursesList, reportOne, reportTwo, reportThree, hist } = props
+    // reportOne = history[0], hist = history
 
     // Variables that keep track of the value whenever changed. Default state is at "None", or is automatically given "None"
     const [CourseValue, setCourseValue] = useState("None");
@@ -142,6 +143,62 @@ function SidebySide(props) {
             return report;
         }  
     }
+
+
+    function alignSchedule(report, scheduleCourse, conflictReport) {
+        let numConflicts = 0;
+        filterConflict(conflictReport, CourseValue, TaValue).map(conflict => {
+            if (conflict[0] == scheduleCourse) {
+                numConflicts += 1;
+            }
+        });
+        console.log(numConflicts);
+        if (numConflicts == 0) {
+            return <p>Hi</p>;
+        }
+        if (numConflicts <= 1) {
+            return (
+                <tr>
+                    <td>COMP {course_name(scheduleCourse)}</td>
+                    <td>{scheduleCourse}</td>
+                    <td>{report[0][scheduleCourse][0][0]}</td>
+                    <td>{report[0][scheduleCourse][0][1]}</td>
+                    <td>{report[0][scheduleCourse][1][0]}</td>
+                    <td>{report[0][scheduleCourse][1][1]}</td>
+                    <td>{checkKeys(report[0][scheduleCourse])[0]}</td>
+                    <td>{checkKeys(report[0][scheduleCourse])[1]}</td>
+                </tr>
+            );
+        }
+        else {
+            return (
+                <>
+                    <tr>
+                        <td>COMP {course_name(scheduleCourse)}</td>
+                        <td>{scheduleCourse}</td>
+                        <td>{report[0][scheduleCourse][0][0]}</td>
+                        <td>{report[0][scheduleCourse][0][1]}</td>
+                        <td>{report[0][scheduleCourse][1][0]}</td>
+                        <td>{report[0][scheduleCourse][1][1]}</td>
+                        <td>{checkKeys(report[0][scheduleCourse])[0]}</td>
+                        <td>{checkKeys(report[0][scheduleCourse])[1]}</td>
+                    </tr>
+
+                    <tr style={{ width:42, height:42 }}>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </>
+            );
+        }    
+    }
+
     return (
         <div>
             {/* Dropdown Menu for the user to filter by Courses and TAs */}
@@ -162,7 +219,40 @@ function SidebySide(props) {
                     </select>
             </div>
 
-            <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div style={{marginLeft: "auto", marginRight: "auto", overflow: "scroll"}}>
+                <div class="row" style={{flexWrap: "nowrap"}}>
+
+                    <div class="col">
+                        <h1>Schedule</h1>
+                        <table class="table table-striped table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>CRN</th>
+                                    <th>TA 1</th>
+                                    <th>TA 1 hours</th>
+                                    <th>TA 2</th>
+                                    <th>TA 2 hours</th>
+                                    <th>TA 3</th>
+                                    <th>TA 3 hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {   
+                                    Object.keys(filterSchedule(reportOne[0], CourseValue, TaValue)).map(course =>
+                                        { alignSchedule(reportOne, course, reportOne[1]) }     
+                                    )
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col">
+                        <font color="red"><h1>Conflict Report 1</h1></font>
+                    </div>
+                </div>
+{/* -------------------------------------------------------------------------------------------------------------------------------------------- */}
+
                 <div class="row" style={{flexWrap: "nowrap"}}>
                     <div class="col">
                         <h1>Schedule 1</h1>
@@ -218,7 +308,7 @@ function SidebySide(props) {
                                         <td>{conflict[3]}</td>
                                         <td>{conflict[4]}</td>
                                     </tr>
-                                    )}
+                                )}   
                             </tbody>
                         </table>
                     </div>
