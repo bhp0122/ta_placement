@@ -260,7 +260,7 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else {
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${takenCourseNumber})`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade in course`);
                     }
                 }
                 // If the TA has taken a qualifying course in a previous semester
@@ -271,7 +271,7 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else { 
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in qualifying course (COMP ${takenCourseNumber})`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade in qualifying course`);
                     }
                 }
             }
