@@ -241,14 +241,14 @@ function CreateEligList(props){
 
                 // if TA is currently taking the course, they aren't eligible
                 if (takenCourse.semester === semester && takenCourse.year === year){
-                    // If the course that is being check that is currently being taken is the current course being checked for an eligible TA or if it is a qualifying course
+                    // If the course that is being checked is currently being taken, is the current course being checked for an eligible TA, or if it is a qualifying course
                     if (takenCourseNumber == curCrse || qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber)) && curCrse != 1900) {
                         isTakingCourse = true;
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, 'Currently taking course');
+                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, 'Currently Enrolled In Course');
                     }
                     // If the course is one of the ones in the list that needs a TA, then the reason is pushed into that course. 
                     else if (all_classes_attend.map(classIndex => {return classIndex.CRN}).includes(takenCourseCRN)) {
-                        pushClassList(class_list, curTAID, takenCourseCRN, takenCourseNumber, takenCourseTaHours, takenCourseEnrollment, false, 'Currently taking course');
+                        pushClassList(class_list, curTAID, takenCourseCRN, takenCourseNumber, takenCourseTaHours, takenCourseEnrollment, false, 'Currently Enrolled In Course');
                     }
                     
                 }
@@ -260,7 +260,7 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else {
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade in course`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Insufficient grade`);
                     }
                 }
                 // If the TA has taken a qualifying course in a previous semester
@@ -271,7 +271,7 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else { 
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Low grade in qualifying course`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Insufficient grade`);
                     }
                 }
             }
@@ -280,11 +280,8 @@ function CreateEligList(props){
                 if (typeof qualifiedCourses == "undefined") {
                     pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
                 }
-                else if (qualifiedCourses.length == 2) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${qualifiedCourses[0]} or ${qualifiedCourses[1]} not taken`);
-                }
                 else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${qualifiedCourses.slice(0, -1).join(', ')}, or ${qualifiedCourses[qualifiedCourses.length - 1]} not taken`);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Lack of Prerequisites: ${qualifiedCourses.slice(0, -1).join(', ')}, ${qualifiedCourses[qualifiedCourses.length - 1]}`);
                 }    
             }
             else if (courseEligible === true){ // if TA has taken the class or taken an eligible class
@@ -320,7 +317,7 @@ function CreateEligList(props){
                     pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "Eligible");
                 }
                 else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
+                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Schedule conflict");
                 }
             }    
         }
