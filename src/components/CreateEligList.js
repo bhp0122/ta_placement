@@ -101,10 +101,11 @@ function CreateEligList(props){
     }
     
     // Pushes the TA's eligibilty status to the class list (including a reason if they are not eligible)
-    function pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, is_able, reasons) {
+    function pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, is_able, reasons) {
         let rowData = {
             CRN: curCRN,
             course_number: curCrse,
+            Section: curSec,
             taHours: taHours,
             totalEnrolled: enrollment,
             TAID: curTAID,
@@ -152,6 +153,7 @@ function CreateEligList(props){
             newRow = {
                 CRN: rowData.CRN,
                 course_number: rowData.course_number,
+                Section: rowData.Section,
                 taHours: taHours,
                 totalEnrolled: enrollment,
                 teacher_assistants: [
@@ -168,6 +170,7 @@ function CreateEligList(props){
             newRow = {
                 CRN: rowData.CRN,
                 course_number: rowData.course_number,
+                Section: rowData.Section,
                 taHours: taHours,
                 totalEnrolled: enrollment,
                 teacher_assistants: [
@@ -191,6 +194,7 @@ function CreateEligList(props){
     for (let i = 0; i < all_classes_attend.length; i++){
         const curCRN = all_classes_attend[i].CRN; // current class being checked CRN
         const curCrse = all_classes_attend[i].crse; //current class being checked Course Number
+        const curSec = all_classes_attend[i].sec; // Current Class Being Checked Section
         const taHours = all_classes_attend[i].totalTAHours; // number of hours this class is good for
         const enrollment = all_classes_attend[i].totalEnrolled; // total number of students enrolled in class
 
@@ -228,6 +232,7 @@ function CreateEligList(props){
                 let takenCourse = curTACourses[k];
                 let takenCourseNumber = takenCourse.courseNumber;
                 let takenCourseCRN = takenCourse.CRN;
+                let takenCourseSec = takenCourse.sectionNumber;
                 let takenCourseTaHours = null;
                 let takenCourseEnrollment = null;
 
@@ -244,11 +249,11 @@ function CreateEligList(props){
                     // If the course that is being checked is currently being taken, is the current course being checked for an eligible TA, or if it is a qualifying course
                     if (takenCourseNumber == curCrse || qualifiedCourses && QUALIFIED_COURSES[curCrse].includes(Number(takenCourseNumber)) && curCrse != 1900) {
                         isTakingCourse = true;
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, 'Currently Enrolled In Course');
+                        pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, 'Currently Enrolled In Course');
                     }
                     // If the course is one of the ones in the list that needs a TA, then the reason is pushed into that course. 
                     else if (all_classes_attend.map(classIndex => {return classIndex.CRN}).includes(takenCourseCRN)) {
-                        pushClassList(class_list, curTAID, takenCourseCRN, takenCourseNumber, takenCourseTaHours, takenCourseEnrollment, false, 'Currently Enrolled In Course');
+                        pushClassList(class_list, curTAID, takenCourseCRN, takenCourseNumber, takenCourseSec, takenCourseTaHours, takenCourseEnrollment, false, 'Currently Enrolled In Course');
                     }
                     
                 }
@@ -260,7 +265,7 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else {
-                        pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Insufficient grade`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Insufficient grade`);
                     }
                 }
                 // If the TA has taken a qualifying course in a previous semester
@@ -278,10 +283,10 @@ function CreateEligList(props){
             // If the TA has not taken any course or the course associated
             if (hastakenQualifiedCourse == false && hastakenCourse == false && isTakingCourse == false) {
                 if (typeof qualifiedCourses == "undefined") {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `COMP ${curCrse} not taken`);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `COMP ${curCrse} not taken`);
                 }
                 else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, `Lack of Prerequisites: ${qualifiedCourses.slice(0, -1).join(', ')}, ${qualifiedCourses[qualifiedCourses.length - 1]}`);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Lack of Prerequisites: ${qualifiedCourses.slice(0, -1).join(', ')}, ${qualifiedCourses[qualifiedCourses.length - 1]}`);
                 }    
             }
             else if (courseEligible === true){ // if TA has taken the class or taken an eligible class
@@ -314,10 +319,10 @@ function CreateEligList(props){
                     }
                 }
                 if (timeEligible) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, true, "Eligible");
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, true, "Eligible");
                 }
                 else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, taHours, enrollment, false, "Schedule conflict");
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, "Schedule conflict");
                 }
             }    
         }

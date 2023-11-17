@@ -337,6 +337,14 @@ function course_name(course){
 	return course_name;
 }
 
+// Combining the course's name , section , and crn
+function course_combo(course){
+	const current_course = courses.find(c => c.CRN === course);
+	const course_name = current_course.course_number;
+	const course_section = current_course.Section;
+	return `${course_name} ${course_section} ${course}`;
+}
+
 [preferred_rankings_men, preferred_rankings_women, remaining_hours_men, remaining_hours_women] = createCourseTas(courses, tas)
 run_all()
 
@@ -350,7 +358,7 @@ function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
     Object.keys(schedule).forEach((course) => {
 		if ( schedule[course].length >= 3 ){
 			rows.push([        
-				course,        
+				course_combo(course),        
 				remaining_hours_men[course],
 				schedule[course][0][0],
 				schedule[course][0][1],
@@ -363,7 +371,7 @@ function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
 			);
 		}else{
 			rows.push([        
-				course,        
+				course_combo(course),        
 				remaining_hours_men[course],
 				schedule[course][0][0],
 				schedule[course][0][1],
@@ -378,9 +386,9 @@ function convertToCSV(schedule, remaining_hours_men, conflictReport,) {
     });
 
 	rows.push([]);
-	rows.push(["Conflict's Course Name", "Conflict's CRN", "UID", "Last Name", "First Name", "Conflict Reason"]);
+	rows.push(["Conflict's Course", "UID", "Last Name", "First Name", "Conflict Reason"]);
 	conflictReport.forEach((conflict) =>{
-		rows.push([course_name(conflict[0]), conflict[0], conflict[1], conflict[2], conflict[3], conflict[4]]);
+		rows.push([course_combo(conflict[0]), conflict[1], conflict[2], conflict[3], conflict[4]]);
 	});
 	
 
@@ -399,7 +407,7 @@ function handleDownload(event) {
 	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
 }
 
-console.log(free_men);
+console.log(history);
 
 return (
 	<div>
