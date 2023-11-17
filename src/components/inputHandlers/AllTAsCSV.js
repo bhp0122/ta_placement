@@ -32,6 +32,7 @@ function AllTAsCSV(props) {
             "Last_Name",
             "First_Name",
             "Course_Number",
+            "Section_Number",
             "Grade",
             "Title",
             "Days",
@@ -52,6 +53,7 @@ function AllTAsCSV(props) {
         const lastNameIndex = headers.indexOf("Last_Name");
         const firstNameIndex = headers.indexOf("First_Name");
         const courseNumberIndex = headers.indexOf("Course_Number");
+        const sectionNumberIndex = headers.indexOf("Section_Number");
         const gradeIndex = headers.indexOf("Grade");
         const titleIndex = headers.indexOf("Title");
         const daysIndex = headers.indexOf("Days");
@@ -70,6 +72,7 @@ function AllTAsCSV(props) {
             lastName: row[lastNameIndex],
             firstName: row[firstNameIndex],
             courseNumber: row[courseNumberIndex],
+            sectionNumber: row[sectionNumberIndex],
             grade: row[gradeIndex],
             title: row[titleIndex],
             days: row[daysIndex],
@@ -92,6 +95,7 @@ function AllTAsCSV(props) {
             // If a row already exists with the same first three columns, add the 4th-9th columns to it
             existingRow.courses.push({
               courseNumber: rowData.courseNumber,
+              sectionNumber: rowData.sectionNumber,
               grade: rowData.grade,
               title: rowData.title,
               days: rowData.days,
@@ -114,6 +118,7 @@ function AllTAsCSV(props) {
                 courses: [
                   {
                     courseNumber: rowData.courseNumber,
+                    sectionNumber: rowData.sectionNumber,
                     grade: rowData.grade,
                     title: rowData.title,
                     days: rowData.days,
