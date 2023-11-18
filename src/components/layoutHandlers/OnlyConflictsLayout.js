@@ -17,6 +17,13 @@ function OnlyConflictsLayout(props) {
         const course_name = current_course.course_number;
         return course_name;
     }
+    // Combining the course's name , section , and crn
+function course_combo(course){
+	const current_course = coursesList.find(c => c.CRN === course);
+	const course_name = current_course.course_number;
+	const course_section = current_course.Section;
+	return `${course_name} ${course_section} ${course}`;
+}
 
     /* 
     Variable is used in the dropdown. 
@@ -125,7 +132,6 @@ function OnlyConflictsLayout(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -135,8 +141,7 @@ function OnlyConflictsLayout(props) {
                             <tbody>  
                                 {(filterConflict(conflictsOne, CourseValue, TaValue)).map(conflict =>
                                     <tr>
-                                        <td>COMP {course_name(conflict[0])}</td>
-                                        <td>{conflict[0]}</td>
+                                        <td>{course_combo(conflict[0])}</td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -153,7 +158,6 @@ function OnlyConflictsLayout(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -163,8 +167,8 @@ function OnlyConflictsLayout(props) {
                             <tbody>
                                 {filterConflict(conflictsTwo, CourseValue, TaValue).map(conflict => 
                                     <tr> 
-                                        <td>{course_name(conflict[0])}</td>
-                                        <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
+                                        <td>{course_combo(conflict[0])}</td>
+                                        {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -181,7 +185,6 @@ function OnlyConflictsLayout(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -191,8 +194,8 @@ function OnlyConflictsLayout(props) {
                             <tbody>
                                 {filterConflict(conflictsThree, CourseValue, TaValue).map(conflict => 
                                     <tr> 
-                                        <td>{course_name(conflict[0])}</td>
-                                        <td>{conflict[0]}</td> {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
+                                        <td>{course_combo(conflict[0])}</td>
+                                        {/* Each index represent the CRN, UID, First Name, Last Name, and Conflict */}
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
