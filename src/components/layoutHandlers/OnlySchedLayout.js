@@ -147,7 +147,6 @@ function course_combo(course){
                                 {Object.keys(filterSchedule(scheduleOne, CourseValue, TaValue)).map((course, index) =>
                                     <tr key={index}>
                                         <td>{course_combo(course)}</td>
-                                        <td></td>
                                         <td>{scheduleOne[course][0][0]}</td>
                                         <td>{scheduleOne[course][0][1]}</td>
                                         <td>{scheduleOne[course][1][0]}</td>
@@ -196,7 +195,6 @@ function course_combo(course){
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
