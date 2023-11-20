@@ -16,6 +16,14 @@ function OnlySchedLayout(props) {
         const course_name = current_course.course_number;
         return course_name;
     }
+    
+// Combining the course's name , section , and crn
+function course_combo(course){
+	const current_course = coursesList.find(c => c.CRN === course);
+	const course_name = current_course.course_number;
+	const course_section = current_course.Section;
+	return `${course_name} ${course_section} ${course}`;
+}
 
     // Checks for a third TA. 
     function checkKeys(schedule) {
@@ -126,7 +134,6 @@ function OnlySchedLayout(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
@@ -139,8 +146,7 @@ function OnlySchedLayout(props) {
                             <tbody>
                                 {Object.keys(filterSchedule(scheduleOne, CourseValue, TaValue)).map((course, index) =>
                                     <tr key={index}>
-                                        <td>COMP {course_name(course)}</td>
-                                        <td>{course}</td>
+                                        <td>{course_combo(course)}</td>
                                         <td>{scheduleOne[course][0][0]}</td>
                                         <td>{scheduleOne[course][0][1]}</td>
                                         <td>{scheduleOne[course][1][0]}</td>
@@ -159,7 +165,6 @@ function OnlySchedLayout(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
@@ -172,8 +177,7 @@ function OnlySchedLayout(props) {
                                 {Object.keys(filterSchedule(scheduleTwo, CourseValue, TaValue)).map((course, index) =>
                             
                                     <tr key={index}>
-                                        <td>COMP {course_name(course)}</td>
-                                        <td>{course}</td>
+                                        <td>{course_combo(course)}</td>
                                         <td>{scheduleTwo[course][0][0]}</td>
                                         <td>{scheduleTwo[course][0][1]}</td>
                                         <td>{scheduleTwo[course][1][0]}</td>
@@ -191,7 +195,6 @@ function OnlySchedLayout(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>TA 1</th>
                                     <th>TA 1 hours</th>
                                     <th>TA 2</th>
@@ -204,8 +207,7 @@ function OnlySchedLayout(props) {
                             <tbody>
                                 {Object.keys(filterSchedule(scheduleThree, CourseValue, TaValue)).map((course, index) =>
                                     <tr key={index}>
-                                        <td>COMP {course_name(course)}</td>
-                                        <td>{course}</td>
+                                        <td> {course_combo(course)}</td>
                                         <td>{scheduleThree[course][0][0]}</td>
                                         <td>{scheduleThree[course][0][1]}</td>
                                         <td>{scheduleThree[course][1][0]}</td>
