@@ -17,6 +17,14 @@ function ColbyCol(props) {
         return course_name;
     }
 
+    // Combining the course's name , section , and crn
+function course_combo(course){
+	const current_course = coursesList.find(c => c.CRN === course);
+	const course_name = current_course.course_number;
+	const course_section = current_course.Section;
+	return `${course_name} ${course_section} ${course}`;
+}
+
     // Checks for a third TA.
     function checkKeys(schedule) {
         if (schedule.length >= 3) 
@@ -171,7 +179,6 @@ function ColbyCol(props) {
                             <thead>
                                     <tr>
                                         <th>Course</th>
-                                        <th>CRN</th>
                                         <th>TA 1</th>
                                         <th>TA 1 hours</th>
                                         <th>TA 2</th>
@@ -183,8 +190,7 @@ function ColbyCol(props) {
                             <tbody>
                                 {Object.keys(filterSchedule(reportOne[0], CourseValue, TaValue)).map((course, index) => (
                                     <tr  key={index}>
-                                        <td>COMP {course_name(course)}</td>
-                                        <td>{course}</td>
+                                        <td>{course_combo(course)}</td>
                                         <td>{reportOne[0][course][0][0]}</td>
                                         <td>{reportOne[0][course][0][1]}</td>
                                         <td>{reportOne[0][course][1][0]}</td>
@@ -203,7 +209,6 @@ function ColbyCol(props) {
                             <thead>
                                     <tr>
                                         <th>Course</th>
-                                        <th>CRN</th>
                                         <th>TA 1</th>
                                         <th>TA 1 hours</th>
                                         <th>TA 2</th>
@@ -215,8 +220,7 @@ function ColbyCol(props) {
                             <tbody>
                                 {Object.keys(filterSchedule(reportTwo[0], CourseValue, TaValue)).map((course, index) => (
                                     <tr  key={index}>
-                                        <td>COMP {course_name(course)}</td>
-                                        <td>{course}</td>
+                                        <td>{course_combo(course)}</td>
                                         <td>{reportTwo[0][course][0][0]}</td>
                                         <td>{reportTwo[0][course][0][1]}</td>
                                         <td>{reportTwo[0][course][1][0]}</td>
@@ -234,7 +238,6 @@ function ColbyCol(props) {
                             <thead>
                                     <tr>
                                         <th>Course</th>
-                                        <th>CRN</th>
                                         <th>TA 1</th>
                                         <th>TA 1 hours</th>
                                         <th>TA 2</th>
@@ -246,8 +249,7 @@ function ColbyCol(props) {
                             <tbody>
                                 {Object.keys(filterSchedule(reportThree[0], CourseValue, TaValue)).map((course, index) => (
                                     <tr  key={index}>
-                                        <td>COMP {course_name(course)}</td>
-                                        <td>{course}</td>
+                                        <td>{course_combo(course)}</td>
                                         <td>{reportThree[0][course][0][0]}</td>
                                         <td>{reportThree[0][course][0][1]}</td>
                                         <td>{reportThree[0][course][1][0]}</td>
@@ -268,7 +270,6 @@ function ColbyCol(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -278,8 +279,7 @@ function ColbyCol(props) {
                             <tbody>
                                 {filterConflict(reportOne[1], CourseValue, TaValue).map(conflict => 
                                     <tr> 
-                                        <td>COMP {course_name(conflict[0])}</td>
-                                        <td>{conflict[0]}</td>
+                                        <td>{course_combo(conflict[0])}</td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -296,7 +296,6 @@ function ColbyCol(props) {
                             <thead>
                                 <tr>
                                     <th>Course</th>
-                                    <th>CRN</th>
                                     <th>UID</th>
                                     <th>Last</th>
                                     <th>First</th>
@@ -306,8 +305,7 @@ function ColbyCol(props) {
                             <tbody>
                                 {filterConflict(reportTwo[1], CourseValue, TaValue).map(conflict => 
                                     <tr> 
-                                        <td>COMP {course_name(conflict[0])}</td>
-                                        <td>{conflict[0]}</td>
+                                        <td>{course_combo(conflict[0])}</td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
@@ -323,7 +321,6 @@ function ColbyCol(props) {
                         <table class="table table-striped table-bordered table-sm">
                             <thead>
                                 <th>Course</th>
-                                <th>CRN</th>
                                 <th>UID</th>
                                 <th>Last</th>
                                 <th>First</th>
@@ -333,8 +330,7 @@ function ColbyCol(props) {
                             <tbody>
                                 {filterConflict(reportThree[1], CourseValue, TaValue).map(conflict => 
                                     <tr> 
-                                        <td>COMP {course_name(conflict[0])}</td>
-                                        <td>{conflict[0]}</td>
+                                        <td>{course_combo(conflict[0])}</td>
                                         <td>{conflict[1]}</td>
                                         <td>{conflict[2]}</td>
                                         <td>{conflict[3]}</td>
