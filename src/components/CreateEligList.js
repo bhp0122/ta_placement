@@ -265,7 +265,7 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else {
-                        pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in course (COMP ${takenCourseNumber})`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Insufficient Grade`);
                     }
                 }
                 // If the TA has taken a qualifying course in a previous semester
@@ -276,21 +276,18 @@ function CreateEligList(props){
                         courseEligible = true;
                     }
                     else { 
-                        pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Low grade (${takenCourse.grade}) in qualifying course (COMP ${takenCourseNumber})`);
+                        pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Insufficient Grade`);
                     }
                 }
             }
             // If the TA has not taken any course or the course associated
             if (hastakenQualifiedCourse == false && hastakenCourse == false && isTakingCourse == false) {
                 if (typeof qualifiedCourses == "undefined") {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `COMP ${curCrse} not taken`);
-                }
-                else if (qualifiedCourses.length == 2) {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `COMP ${qualifiedCourses[0]} or ${qualifiedCourses[1]} not taken`);
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Lack of Prerequitie: COMP ${curCrse}`);
                 }
                 else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `COMP ${qualifiedCourses.slice(0, -1).join(', ')}, or ${qualifiedCourses[qualifiedCourses.length - 1]} not taken`);
-                }    
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, `Lack of Prerequitie: COMP ${qualifiedCourses.join(', ')}`);
+                }   
             }
             else if (courseEligible === true){ // if TA has taken the class or taken an eligible class
                 for (let x = 0; x < curTACourses.length; x++){ // iterate through each class the TA has taken
@@ -325,7 +322,7 @@ function CreateEligList(props){
                     pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, true, "Eligible");
                 }
                 else {
-                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, "Doesn't have the time required to TA for this course");
+                    pushClassList(class_list, curTAID, curCRN, curCrse, curSec, taHours, enrollment, false, "Schedule Conflict");
                 }
             }    
         }
