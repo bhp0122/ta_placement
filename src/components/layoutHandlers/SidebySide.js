@@ -201,7 +201,68 @@ function SidebySide(props) {
     }
 
 
+    // Adds the necessary rows in the conflict table with their correlated course if there exist a conflict for that course. 
+    function alignConflicts(scheduleCourse, conflictReport) {
+        let numConflicts = 0;
+        conflictReport.map(conflict => {
+            if (conflict[0] == scheduleCourse) {
+                numConflicts += 1;
+            };
+        })
+    
+        if (numConflicts == 0) {
+            return (
+                <tr style={{ height:31 }}>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            )
+        } else if (numConflicts == 1) {
+            for (const c in Object.keys(conflictReport)) {
+                if (conflictReport[c][0] == scheduleCourse) {
+                    return (
+                        <tr>
+                            <td>{course_combo(conflictReport[c][0])}</td>
+                            <td>{conflictReport[c][1]}</td>
+                            <td>{conflictReport[c][2]}</td>
+                            <td>{conflictReport[c][3]}</td>
+                            <td>{conflictReport[c][4]}</td>
+                        </tr>
+                    )
+                }
+            }    
+        } else if (numConflicts == 2) {
+            let listedConflicts = [];
+            for (const c in Object.keys(conflictReport)) {
+                if (conflictReport[c][0] == scheduleCourse) {
+                    listedConflicts.push([course_combo(conflictReport[c][0]), conflictReport[c][1], conflictReport[c][2], conflictReport[c][3], conflictReport[c][4]])
+                }
+            }    
 
+            return (
+                <>
+                    <tr>
+                        <td>{listedConflicts[0][0]}</td>
+                        <td>{listedConflicts[0][1]}</td>
+                        <td>{listedConflicts[0][2]}</td>
+                        <td>{listedConflicts[0][3]}</td>
+                        <td>{listedConflicts[0][4]}</td>
+                    </tr>
+                    <tr>
+                        <td>{listedConflicts[1][0]}</td>
+                        <td>{listedConflicts[1][1]}</td>
+                        <td>{listedConflicts[1][2]}</td>
+                        <td>{listedConflicts[1][3]}</td>
+                        <td>{listedConflicts[1][4]}</td>
+
+                    </tr>
+                </>
+            )
+        }
+    }  
 
     
     return (
@@ -262,14 +323,10 @@ function SidebySide(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filterConflict(reportOne[1], CourseValue, TaValue).map(conflict => 
-                                    <tr> 
-                                        <td>{course_combo(conflict[0])}</td>
-                                        <td>{conflict[1]}</td>
-                                        <td>{conflict[2]}</td>
-                                        <td>{conflict[3]}</td>
-                                        <td>{conflict[4]}</td>
-                                    </tr>
+                                {Object.keys(filterSchedule(reportOne[0], CourseValue, TaValue)).map(scheduleCourse =>
+                                    {
+                                        return alignConflicts(scheduleCourse, filterConflict(reportOne[1], CourseValue, TaValue));
+                                    }
                                 )}
                             </tbody>
                         </table>
@@ -313,14 +370,10 @@ function SidebySide(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filterConflict(reportTwo[1], CourseValue, TaValue).map(conflict => 
-                                    <tr> 
-                                        <td>{course_combo(conflict[0])}</td>
-                                        <td>{conflict[1]}</td>
-                                        <td>{conflict[2]}</td>
-                                        <td>{conflict[3]}</td>
-                                        <td>{conflict[4]}</td>
-                                    </tr>
+                                {Object.keys(filterSchedule(reportTwo[0], CourseValue, TaValue)).map(scheduleCourse =>
+                                    {
+                                        return alignConflicts(scheduleCourse, filterConflict(reportTwo[1], CourseValue, TaValue));
+                                    }
                                 )}
                             </tbody>
                         </table> 
@@ -363,14 +416,10 @@ function SidebySide(props) {
                                 <th>Conflict</th>
                             </thead>
                             <tbody>
-                                {filterConflict(reportThree[1], CourseValue, TaValue).map(conflict => 
-                                    <tr> 
-                                        <td>{course_combo(conflict[0])}</td>
-                                        <td>{conflict[1]}</td>
-                                        <td>{conflict[2]}</td>
-                                        <td>{conflict[3]}</td>
-                                        <td>{conflict[4]}</td>
-                                    </tr>
+                                {Object.keys(filterSchedule(reportThree[0], CourseValue, TaValue)).map(scheduleCourse =>
+                                    {
+                                        return alignConflicts(scheduleCourse, filterConflict(reportThree[1], CourseValue, TaValue));
+                                    }
                                 )}
                             </tbody>
                         </table>  
