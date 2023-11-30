@@ -404,7 +404,7 @@ function downloadCSV(csvData, fileName) {
   
 function handleDownload(event) {
 	const csv = convertToCSV(history[event.target.value][0], history[event.target.value][3], history[event.target.value][1]);
-	downloadCSV(csv, 'schedule' + event.target.value + '.csv');
+	downloadCSV(csv, 'Schedule ' + parseInt(event.target.value + 1) + '.csv');
 }
 
 console.log(history);
