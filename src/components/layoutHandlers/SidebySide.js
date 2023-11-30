@@ -289,7 +289,7 @@ function SidebySide(props) {
                 <div class="row" style={{flexWrap: "nowrap"}}>
                     <div class="col">
                         <h1>Schedule 1</h1>
-                        <table class="table table-striped table-bordered table-sm">
+                        <table class="table table-striped table-bordered table-sm" style={{width: "600px"}}>
                             <thead>
                                     <tr>
                                         <th>Course</th>
@@ -312,7 +312,7 @@ function SidebySide(props) {
                     </div>
                     <div class="col">
                         <font color="red"><h1>Conflict Report 1</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "1000px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -336,7 +336,7 @@ function SidebySide(props) {
                 <div class="row" style={{flexWrap: "nowrap"}}>
                     <div class="col">
                         <h1>Schedule 2</h1>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "600px"}}>
                             <thead>
                                     <tr>
                                         <th>Course</th>
@@ -359,7 +359,7 @@ function SidebySide(props) {
                     </div>
                     <div class="col">
                         <font color="red"><h1>Conflict Report 2</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "1000px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -384,7 +384,7 @@ function SidebySide(props) {
                 <div class="row" style={{flexWrap: "nowrap"}}>
                     <div class="col">
                         <h1>Schedule 3</h1>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "600px"}}>
                             <thead>
                                     <tr>
                                         <th>Course</th>
@@ -407,7 +407,7 @@ function SidebySide(props) {
                     </div>
                     <div class="col">
                         <font color="red"><h1>Conflict Report 3</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "1000px"}}>
                             <thead>
                                 <th>Course</th>
                                 <th>UID</th>
