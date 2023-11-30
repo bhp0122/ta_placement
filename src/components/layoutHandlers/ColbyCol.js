@@ -171,11 +171,11 @@ function course_combo(course){
                     </select>
             </div>
 
-            <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div style={{marginLeft: "4%", overflow: "scroll", paddingRight: "4%"}}>
                 <div class="row" style={{flexWrap:"nowrap",float: "left"}}>
                     <div class="col">
                         <h1>Schedule 1</h1>
-                        <table class="table table-striped table-bordered table-sm">
+                        <table class="table table-striped table-bordered table-sm" style={{width: "600px"}}>
                             <thead>
                                     <tr>
                                         <th>Course</th>
@@ -205,7 +205,7 @@ function course_combo(course){
 
                     <div class="col">
                         <h1>Schedule 2</h1>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "600px"}}>
                             <thead>
                                     <tr>
                                         <th>Course</th>
@@ -234,7 +234,7 @@ function course_combo(course){
                     </div>
                     <div class="col">
                         <h1>Schedule 3</h1>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "600px"}}>
                             <thead>
                                     <tr>
                                         <th>Course</th>
@@ -266,7 +266,7 @@ function course_combo(course){
                 <div class="row" style={{flexWrap:"nowrap"}}>
                     <div class="col">
                         <font color="red"><h1>Conflict Report 1</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "600px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -292,7 +292,7 @@ function course_combo(course){
 
                     <div class="col">
                         <font color="red"><h1>Conflict Report 2</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "600px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -318,7 +318,7 @@ function course_combo(course){
 
                     <div class="col">
                         <font color="red"><h1>Conflict Report 3</h1></font>
-                        <table class="table table-striped table-bordered table-sm">
+                        <table class="table table-striped table-bordered table-sm" style={{width: "600px"}}>
                             <thead>
                                 <th>Course</th>
                                 <th>UID</th>
