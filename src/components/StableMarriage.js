@@ -428,7 +428,7 @@ return (
 					<button value={2} class="w3-bar-item w3-button w3-border-bottom" style={{alignContent:"left"}} onClick={handleDownload}>Download Report 3</button>		
 			</div>
 
-			<div class="container" style={{left: 0}}>
+			<div class="container" style={{marginLeft: "150px"}}>
 				{/* Reference layoutHandlers folder that contains each of the layouts and their functions. */}
 				<Routes>
 					{console.log(tas)}
