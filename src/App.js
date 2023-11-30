@@ -20,8 +20,10 @@ function App() {
           <div style={{width:'12.5%', float:'left'}}><br></br></div>
           <div style={{ width:'75%', float:'left', marginTop:'30px'}}>
             {predet && <Predeterminations courses={classList} tas={all_TAs} setpredet={setpredet} setRunAlg={setRunAlg} setPredeterminations={setPredeterminations} />}
+          </div>
+          <div style={{ width:'100%', float:'left', marginTop:'30px'}}>
             {run_alg && <StableMarriage setProgress={setProgress} courses={classList} tas={all_TAs} predeterminations={predeterminations}  />}
-          </div> 
+          </div>
           <div style={{width:'12.5%', float:'left'}}><br></br></div>
         </div>
       </div>
