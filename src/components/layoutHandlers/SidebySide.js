@@ -285,7 +285,7 @@ function SidebySide(props) {
                     </select>
             </div>
 
-            <div style={{marginLeft: "150px", overflow: "scroll"}}>
+            <div style={{marginLeft: "4%", overflow: "scroll"}}>
                 <div class="row" style={{flexWrap: "nowrap"}}>
                     <div class="col">
                         <h1>Schedule 1</h1>
