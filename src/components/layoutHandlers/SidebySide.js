@@ -150,6 +150,60 @@ function SidebySide(props) {
             return report;
         }  
     }
+    
+    // Adds the necessary rows in the schedule table with their correlated conflict if it exists and, if there is more than one confilct, adds an empty row beneath.
+    function alignSchedule(scheduleReport, scheduleCourse, conflictReport) {
+        let numConflicts = 0 // Keeps track of number of conflicts a course has. 
+        conflictReport.map(conflict => {
+            if (conflict[0] == scheduleCourse) {
+                numConflicts += 1;
+            }
+        });
+        if (numConflicts <= 1) {
+            return (
+                <tr>
+                    <td>{course_combo(scheduleCourse)}</td>
+                    <td>{scheduleReport[scheduleCourse][0][0]}</td>
+                    <td>{scheduleReport[scheduleCourse][0][1]}</td>
+                    <td>{scheduleReport[scheduleCourse][1][0]}</td>
+                    <td>{scheduleReport[scheduleCourse][1][1]}</td>
+                    <td>{checkKeys(scheduleReport[scheduleCourse])[0]}</td>
+                    <td>{checkKeys(scheduleReport[scheduleCourse])[1]}</td>
+                </tr>
+            );
+        }
+        else {
+            return (
+                <>
+                    <tr>
+                        <td>{course_combo(scheduleCourse)}</ td>
+                        <td>{scheduleReport[scheduleCourse][0][0]}</td>
+                        <td>{scheduleReport[scheduleCourse][0][1]}</td>
+                        <td>{scheduleReport[scheduleCourse][1][0]}</td>
+                        <td>{scheduleReport[scheduleCourse][1][1]}</td>
+                        <td>{checkKeys(scheduleReport[scheduleCourse])[0]}</td>
+                        <td>{checkKeys(scheduleReport[scheduleCourse])[1]}</td>
+                    </tr>
+
+                    {/* Adds an empty row if a course has more than one conflict meaning there are two TAs assigned that both have conflicts. */}
+                    <tr style={{ height:31 }}>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </>
+            )
+        }    
+    }
+
+
+
+
+    
     return (
         <div>
             {/* Dropdown Menu for the user to filter by Courses and TAs */}
@@ -187,17 +241,11 @@ function SidebySide(props) {
                                     </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(filterSchedule(reportOne[0], CourseValue, TaValue)).map((course, index) => (
-                                    <tr  key={index}>
-                                        <td>{course_combo(course)}</td>
-                                        <td>{reportOne[0][course][0][0]}</td>
-                                        <td>{reportOne[0][course][0][1]}</td>
-                                        <td>{reportOne[0][course][1][0]}</td>
-                                        <td>{reportOne[0][course][1][1]}</td>
-                                        <td>{checkKeys(reportOne[0][course])[0]}</td>
-                                        <td>{checkKeys(reportOne[0][course])[1]}</td>
-                                    </tr>
-                                ))}
+                                {Object.keys(filterSchedule(reportOne[0], CourseValue, TaValue)).map(scheduleCourse =>
+                                    {
+                                        return alignSchedule(filterSchedule(reportOne[0], CourseValue, TaValue), scheduleCourse, filterConflict(reportOne[1], CourseValue, TaValue));
+                                    }
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -222,7 +270,7 @@ function SidebySide(props) {
                                         <td>{conflict[3]}</td>
                                         <td>{conflict[4]}</td>
                                     </tr>
-                                    )}
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -244,17 +292,11 @@ function SidebySide(props) {
                                     </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(filterSchedule(reportTwo[0], CourseValue, TaValue)).map((course, index) => (
-                                    <tr  key={index}>
-                                        <td>{course_combo(course)}</td>
-                                        <td>{reportTwo[0][course][0][0]}</td>
-                                        <td>{reportTwo[0][course][0][1]}</td>
-                                        <td>{reportTwo[0][course][1][0]}</td>
-                                        <td>{reportTwo[0][course][1][1]}</td>
-                                        <td>{checkKeys(reportTwo[0][course])[0]}</td>
-                                        <td>{checkKeys(reportTwo[0][course])[1]}</td>
-                                    </tr>
-                                ))}
+                                {Object.keys(filterSchedule(reportTwo[0], CourseValue, TaValue)).map(scheduleCourse =>
+                                    {
+                                        return alignSchedule(filterSchedule(reportTwo[0], CourseValue, TaValue), scheduleCourse, filterConflict(reportTwo[1], CourseValue, TaValue));
+                                    }
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -302,17 +344,11 @@ function SidebySide(props) {
                                     </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(filterSchedule(reportThree[0], CourseValue, TaValue)).map((course, index) => (
-                                    <tr  key={index}>
-                                        <td>{course_combo(course)}</td>
-                                        <td>{reportThree[0][course][0][0]}</td>
-                                        <td>{reportThree[0][course][0][1]}</td>
-                                        <td>{reportThree[0][course][1][0]}</td>
-                                        <td>{reportThree[0][course][1][1]}</td>
-                                        <td>{checkKeys(reportThree[0][course])[0]}</td>
-                                        <td>{checkKeys(reportThree[0][course])[0]}</td>
-                                    </tr>
-                                ))}
+                                {Object.keys(filterSchedule(reportThree[0], CourseValue, TaValue)).map(scheduleCourse =>
+                                    {
+                                        return alignSchedule(filterSchedule(reportThree[0], CourseValue, TaValue), scheduleCourse, filterConflict(reportThree[1], CourseValue, TaValue));
+                                    }
+                                )}
                             </tbody>
                         </table>
                     </div>
