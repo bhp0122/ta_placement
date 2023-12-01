@@ -126,7 +126,7 @@ function course_combo(course){
                     </select>
             </div>
 
-            <div style={{marginLeft: "4%", overflow: "scroll"}}>
+            <div style={{marginLeft: "5%", overflow: "scroll", marginRight: "5%"}}>
                 <div class="row" style={{flexWrap:"nowrap"}}>
                     <div class="col">
                         <h1>Schedule 1</h1>
