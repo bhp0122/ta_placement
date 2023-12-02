@@ -124,12 +124,11 @@ function course_combo(course){
                     </select>
             </div>
 
-            <div style={{marginLeft: "auto", marginRight: "auto", overflow: "scroll"}}>
-                <p id="demo1"></p>
+            <div style={{marginLeft: "5%", overflow: "scroll",  marginRight: "5%"}}>
                 <div class="row" style={{flexWrap:"nowrap"}}>
                     <div class="col">
                         <font color="red"><h1>Conflict Report 1</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "800px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -155,7 +154,7 @@ function course_combo(course){
 
                     <div class="col">
                         <font color="red"><h1>Conflict Report 2</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "800px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -182,7 +181,7 @@ function course_combo(course){
                     
                     <div class="col">
                         <font color="red"><h1>Conflict Report 3</h1></font>
-                        <table class="table table-striped table-bordered table-responsive table-sm">
+                        <table class="table table-striped table-bordered table-responsive table-sm" style={{width: "800px"}}>
                             <thead>
                                 <tr>
                                     <th>Course</th>
