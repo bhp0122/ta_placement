@@ -107,8 +107,9 @@ function course_combo(course){
     return (
         <div>
             {/* Dropdown Menu for the user to filter by Courses and TAs */}
-            <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"38%", padding: "5px"}}>
+            <div class="w3-sidebar w3-border w3-bar-block" style={{width: "10%", height: "auto", position: "relative", float: "left", left: 10, bottom:"31%", padding: "5px"}}>
                     {/* OnChange defines the function/variable/method that gets triggered whenever an option is picked by the user. */}
+                    <h6 style={{fontWeight: "bold", textAlign: "center"}}>Filters</h6>
                     <select id="chooseCourse" onChange={handleCourseFilter}>
                         <option value="None">Course</option>
 						{removeDuplicates(coursesList).map(course =>
