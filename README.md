@@ -14,7 +14,10 @@ All Code is contained in the src folder, below is a breief description of what e
 - FileInputs.js: This component handles the design of the landing page of the application
 - Predeterminations.js: This component allows the user to assign specific TAs to a specific class if they want to before the algorithm is run.
 - StableMarriage.js: This component actually contains the code of the algorithm itself to run.
-
+- ColbyCol.js: Displays the schedule and conflict reports in columns.
+- OnlyConflictsLayout.js: Displays only the conflict reports in one row.
+- OnlySchedLayout.js: Displays only the schedule reports in one row.
+- SidebySide.js: Displays the schedule reports with their corresponding conflict reports. 
 
 # Input Files
 
